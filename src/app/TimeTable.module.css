@@ -89,9 +89,10 @@
 .input {
     width: 100%;
     padding: 4px;
-    background-color: black;
+    background-color: orange;
     color: white;
     border: 1px solid #d1d5db;
+    color: purple;
 }
   
 .textCenter {
