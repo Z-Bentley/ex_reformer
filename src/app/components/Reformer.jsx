@@ -20,7 +20,7 @@ const source1451 = {
 
 export default function NormalReformer({ data, totalWeight, heavyWeight, expressWeight }) {
     const [sourceInfo, setSourceInfo] = useState(source1460);
-    const [scheduledTime, setScheduledTime] = useState("06:02");
+    const [scheduledTime, setScheduledTime] = useState("05:58");
     const [sortStartTime, setSortStartTime] = useState("");
     const [sortEndTime, setSortEndTime] = useState("");
     const [flightData, setFlightData] = useState([]);
@@ -34,10 +34,11 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
         fetch(newSource.flight)
             .then((response) => response.json())
             .then((json) => {
-                const newTime = json[0].schedule; 
-                setScheduledTime(newTime); 
-                
-                const [startTime, endTime] = excel.setSortTimes(newTime);
+                setFlightData(json);
+                const newScheduledTime = json[0].schedule;
+                setScheduledTime(newScheduledTime);
+
+                const [startTime, endTime] = excel.setSortTimes(newScheduledTime);
                 setSortStartTime(startTime);
                 setSortEndTime(endTime);
             })
@@ -63,19 +64,29 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
 
     // Function to update times when aircraft arrival time changes
     useEffect(() => {
+        if (!scheduledTime) return;
+    
         const [startTime, endTime] = excel.setSortTimes(scheduledTime);
         setSortStartTime(startTime);
         setSortEndTime(endTime);
-    }, [scheduledTime]);
+    
+        setFlightData((prevData) =>
+            prevData.map((row) => {
+                if (row.id === 1) return { ...row, schedule: startTime };
+                if (row.id === 2) return { ...row, schedule: endTime };
+                return row;
+            })
+        );
+    }, [scheduledTime]);    
 
     // Update flight data when scheduledTime, sortStartTime, or sortEndTime changes
     useEffect(() => {
         if (flightData.length > 0) {
             setFlightData((prevData) =>
                 prevData.map((row) => {
-                    if (row.id === 1) return { ...row, schedule: scheduledTime }; // Aircraft Arrival
-                    if (row.id === 2) return { ...row, schedule: sortStartTime }; // Sort Start
-                    if (row.id === 3) return { ...row, schedule: sortEndTime }; // Sort End
+                    if (row.id === 0) return { ...row, schedule: scheduledTime }; // Aircraft Arrival
+                    if (row.id === 1) return { ...row, schedule: sortStartTime }; // Sort Start
+                    if (row.id === 2) return { ...row, schedule: sortEndTime }; // Sort End
                     return row;
                 })
             );
@@ -84,11 +95,40 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
 
     // Handle input change for Aircraft Arrival time
     const handleInputChange = (id, field, value) => {
-        if (id === 1 && field === "schedule") {
-            setScheduledTime(value); // Update Aircraft Arrival time
-        }
+        setDestinationData((prevData) =>
+            prevData.map((row) => {
+                if (row.id === id) {
+                    const updatedRow = { ...row, [field]: value };
+    
+                    if (field === "actual" || field === "schedule") {
+                        updatedRow.variance = excel.calculateVariance(updatedRow.schedule, updatedRow.actual);
+                    }
+                    return updatedRow;
+                }
+                return row;
+            })
+        );
     };
-
+    
+    const handleFlightEdit = (id, field, value) => {
+        setFlightData((prevData) =>
+            prevData.map((row) => {
+                if (row.id === id) {
+                    const updatedRow = { ...row, [field]: value };
+    
+                    if (field === "schedule" || field === "actual") {
+                        updatedRow.variance = excel.calculateVariance(
+                            field === "schedule" ? value : row.schedule, 
+                            field === "actual" ? value : row.actual
+                        );
+                    }
+                    return updatedRow;
+                }
+                return row;
+            })
+        );
+    };    
+    
     // Root Cause Late Codes
     const handleInputText = (event) => {
         setInputValue(event.target.value)
@@ -131,17 +171,19 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                                 <tr key={row.id}>
                                     <td className={styles.td}>{row.name}</td>
                                     <td className={styles.td}>
-                                        {row.id === 1 ? (
-                                            <span>{sortStartTime}</span>
-                                        ) : row.id === 2 ? (
-                                            <span>{sortEndTime}</span>
-                                        ) : (
+                                        {row.id === 0 ? (
                                             <input
                                                 type="text"
                                                 className={styles.input}
-                                                value={row.schedule}
-                                                onChange={(e) => handleInputChange(row.id, "schedule", e.target.value)}
+                                                value={scheduledTime}
+                                                onChange={(e) => {
+                                                    const newTime = e.target.value;
+                                                    setScheduledTime(newTime);
+                                                    handleFlightEdit(row.id, "schedule", newTime);
+                                                }}
                                             />
+                                        ) : (
+                                            <span>{row.schedule}</span>
                                         )}
                                     </td>
                                     <td className={styles.td}>
@@ -149,13 +191,14 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                                             type="text"
                                             className={styles.input}
                                             value={row.actual}
-                                            onChange={(e) => handleInputChange(row.id, "actual", e.target.value)}
+                                            onChange={(e) => handleFlightEdit(row.id, "actual", e.target.value)}
                                         />
                                     </td>
                                     <td className={`${styles.td} ${styles.textCenter}`}>{row.variance}</td>
                                 </tr>
                             ))}
                         </tbody>
+
                     </table>
                 </div>
 
