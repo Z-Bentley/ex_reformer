@@ -91,3 +91,44 @@ function calcWeight(sheet, dest = null) {
 
     return totalWeight.toLocaleString(); // Format with commas
 }
+
+// Manageable Time
+function timeToMinutes(time) {
+    const [hours, minutes] = time.split(":").map(Number);
+    return hours * 60 + minutes;
+};
+
+function minutesToTime(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${String(hours).padStart(2, "0")}:${String(remainingMinutes).padStart(2, "0")}`;
+}
+
+// Validate if input is in HH:MM format
+function isValidTime(time) {
+    return /^\d{1,2}:\d{2}$/.test(time);
+};
+
+// Function to calculate the variance (time difference)
+export function calculateVariance(schedule, actual) {
+    if (!isValidTime(schedule) || !isValidTime(actual)) return "--";
+
+    const scheduleMinutes = timeToMinutes(schedule);
+    const actualMinutes = timeToMinutes(actual);
+    const diff = actualMinutes - scheduleMinutes;
+
+    return diff === 0 ? "+0" : `${diff >= 0 ? "+" : ""}${diff}`;
+};
+
+// Set the scheduled Sort Start and Sort End to the Aircraft Arrival
+export function setSortTimes(time) {
+    const aircraftArrivalMin = timeToMinutes(time);
+    const sortStartMinutes = aircraftArrivalMin + 24;
+    const sortEndMinutes = sortStartMinutes + 20;
+
+    const startTime = minutesToTime(sortStartMinutes);
+    const sortEnd = minutesToTime(sortEndMinutes)
+
+    // debugWithConsole(time, aircraftArrivalMin, sortStartMinutes, sortEndMinutes, startTime, sortEnd)
+    return [startTime, sortEnd];
+}
