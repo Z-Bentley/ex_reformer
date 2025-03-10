@@ -44,7 +44,6 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
             })
             .catch((error) => console.error("Error loading new flight data:", error));
     }
-    
 
     // Load Flight Data from JSON
     useEffect(() => {
@@ -140,19 +139,20 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
             <div className="flex justify-center">
                 <button 
                     onClick={() => toggleSourceInfo(0)}
-                    className="px-4 py-2 m-2 bg-blue-500 text-white rounded"
+                    // className="px-4 py-2 m-2 bg-blue-500 text-white rounded"
+                    className={styles.button1460}
                 >
                     Flight 1460
                 </button>
                 <button 
                     onClick={() => toggleSourceInfo(1)}
-                    className="px-4 py-2 m-2 bg-green-500 text-white rounded"
+                    className={styles.button1451}
                 >
                     Flight 1451
                 </button>
             </div>
 
-            <div id="executive-summary">
+            <div id="executive-summary" className="p-3">
                 <h1 className={styles.heading}>Executive Summary</h1>
                 {/* Local Sort Plan */}
                 <div className={styles.section}>
