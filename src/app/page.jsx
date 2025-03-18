@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react";
 import * as excel from "./excel.js"
-import styles from "./TimeTable.module.css"
+import styles from "./styles/base.module.css"
 import Reformer from "./components/Reformer.jsx";
 
 export default function EditableTimeTable() {
@@ -79,7 +79,7 @@ export default function EditableTimeTable() {
   };
 
   return (
-    <div>
+    <div className={styles.main}>
       {/* Select and Copy Buttons */}
       <div className={styles.container}>
         <div className={styles.leftButtons}>

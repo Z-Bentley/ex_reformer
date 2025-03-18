@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import styles from "../TimeTable.module.css";
+import styles from "../styles/base.module.css";
 import * as excel from "../excel";
 
 const source1460 = {
