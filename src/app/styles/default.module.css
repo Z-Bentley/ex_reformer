@@ -1,35 +1,182 @@
 .main {
-    background-color: rgba(255, 255, 255, 0.842);
-  }
-  
-  .button {
-    background-color: #9ca3af;
-    color: white;
-  }
-  
-  .copyButton {
-    background-color: #3b82f6;
-    color: white;
-  }
-  
-  .button1460 {
-    background-color: #3b82f6;
-    color: white;
-  }
-  
-  .button1451 {
-    background-color: green;
-    color: white;
-  }
-  
-  .section {
-    background: linear-gradient(
-      135deg,
-      #00e426,
-      #af4c4c,
-      #2e537d,
-      #A5D6A7,
-      #b32121
-    );
-  }
-  
+  /* background-color: white; */
+  /* background: linear-gradient(
+      135deg, 
+      #00dce4,
+      #4c4eaf, 
+      #2e577d, 
+      #b7d6a5, 
+      #2dc954, 
+      #2e7d35, 
+      #a5d6b1, 
+      #21b3a7,
+      #00dce4,
+      #4c4eaf, 
+      #2e577d, 
+      #b3d6a5, 
+      #0e660e, 
+      #2e7d55, 
+      #afd6a5, 
+      #32b321
+  ); */
+  background-image: url('/public/forest.jpg');
+}
+
+/* Buttons */
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+}
+
+.leftButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.button {
+  padding: 8px;
+  border-radius: 4px;
+  background-color: #ff000069;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.copyButton {
+  padding: 8px;
+  background-color: #f63b3b;
+  color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.selectedFile {
+  margin-top: 8px;
+}
+
+.rightButtons {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.secretArea {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.secretArea:hover {
+  opacity: 0.5;
+}
+
+.downloadButton {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #ff4500;
+  margin-left: 10px;
+}
+
+/* Flight Buttons */
+.button1460 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin: 0.5rem;
+  background-color: #880000;
+  color: white;
+  border-radius: 0.25rem;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.button1451 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin: 0.5rem;
+  background-color: rgb(255, 0, 0);
+  color: white;
+  border-radius: 0.25rem;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Executive Summary */
+.heading {
+  padding: 16px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: white;
+  text-shadow: 0 0 5px #0ff,
+  0 0 10px rgb(255, 0, 0),
+  0 0 20px rgb(151, 0, 0),
+  0 0 10px rgb(255, 0, 0),
+  0 0 20px rgb(151, 0, 0),
+  0 0 40px rgb(129, 0, 0),
+  0 0 80px rgb(255, 0, 0);
+}
+
+.section {
+  border: black;
+  background: radial-gradient(
+      circle, 
+      rgba(255,0,0,1) 0%, 
+      rgba(121,9,9,1) 40%, 
+      rgba(255,0,0,1) 100%
+  );
+  padding: 16px;
+  margin: 30px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 5px rgb(0, 0, 0);
+}
+
+.subHeading {
+  font-size: 1.125rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #6b7280;
+}
+
+.th,
+.td {
+  border: 1px solid #6b7280;
+  padding: 8px;
+  text-align: center;
+  background-color: rgb(255, 122, 122);
+}
+
+.input {
+  width: 100%;
+  padding: 4px;
+  background-color: rgb(253, 167, 246);
+  color: white;
+  border: 1px solid #d1d5db;
+  border-color: gray;
+  color: black;
+}
+
+.textCenter {
+  text-align: center;
+}

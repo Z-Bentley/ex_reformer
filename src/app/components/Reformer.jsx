@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import styles from "../styles/base.module.css";
 import * as excel from "../excel";
+import { Button } from "@/components/ui/button";
 
 const source1460 = {
     id: 0,
@@ -133,6 +134,18 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
         setInputValue(event.target.value)
     }
 
+    // Add New Route
+    const addNewRoute = () => {
+        const newId = destinationData.length > 0 ? Math.max(...destinationData.map(r => r.id)) + 1 : 1;
+        const newRoute = { id: newId, destination: "", schedule: "07:00", actual: "07:30", variance: "+30" };
+        setDestinationData((prev) => [...prev, newRoute]);
+    };
+
+    // Remove Route
+    const deleteRoute = (id) => {
+        setDestinationData((prev) => prev.filter((row) => row.id !== id));
+    };
+
     return (
         <div>
             {/* Flight buttons */}
@@ -246,9 +259,9 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                             <td className={styles.td}></td>
                             <td className={styles.td}>
                                 <p>Plan= 6550lbs</p>
-                                <p>Actual:</p>
+                                <p>Actual: <input className={styles.input}></input></p>
                                 <p>Plan= 655 pieces</p>
-                                <p>Actual:</p>
+                                <p>Actual: <input className={styles.input}></input></p>
                             </td>
                             <td className={styles.td}></td>
                             <td className={styles.td}></td>
@@ -259,7 +272,10 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
 
                 {/* Outbound Truck Routes */}
                 <div className={styles.section}>
-                    <h2 className={styles.subHeading}>Outbound Truck Routes</h2>
+                    <div className="flex justify-between p-1">
+                        <h2 className={styles.subHeading}>Outbound Truck Routes</h2>
+                        <Button id="doNotCopy" onClick={addNewRoute}>Add New Route</Button>
+                    </div>
                     <table className={styles.table}>
                         <thead>
                             <tr>
@@ -267,6 +283,7 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                                 <th className={styles.th}>Schedule</th>
                                 <th className={styles.th}>Actual</th>
                                 <th className={styles.th}>Variance</th>
+                                <th id="doNotCopy" className={styles.th}>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -297,6 +314,9 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                                         />
                                     </td>
                                     <td className={`${styles.td} ${styles.textCenter}`}>{row.variance}</td>
+                                    <td className="flex justify-center" id="doNotCopy">
+                                        <Button variant="destructive" onClick={() => deleteRoute(row.id)}>X</Button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
