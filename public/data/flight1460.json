@@ -2,9 +2,9 @@
     { 
         "id": 0, 
         "name": "Aircraft Arrival", 
-        "schedule": "05:58", 
+        "schedule": "06:04", 
         "actual": "6:29", 
-        "variance": "+31" 
+        "variance": "+25" 
     },
     { 
         "id": 1, 
