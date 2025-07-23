@@ -9,16 +9,16 @@
     { 
         "id": 1, 
         "name": "Sort Start", 
-        "schedule": "06:22", 
+        "schedule": "06:28", 
         "actual": "6:43", 
-        "variance": "+21" 
+        "variance": "+15" 
     },
     { 
         "id": 2, 
         "name": "Sort End", 
-        "schedule": "06:42", 
+        "schedule": "06:48", 
         "actual": "7:10", 
-        "variance": "+28" 
+        "variance": "+22" 
     }
   ]
   
