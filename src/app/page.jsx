@@ -66,7 +66,6 @@ export default function EditableTimeTable() {
       .then(() => alert("Executive Summary copied to clipboard!"))
       .catch((err) => console.error("Failed to copy:", err));
   };
-  
 
   // Function to trigger the file download
   const downloadExampleFile = () => {

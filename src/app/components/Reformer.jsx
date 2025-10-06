@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import styles from "../styles/base.module.css";
 import * as excel from "../excel";
 import { Button } from "@/components/ui/button";
+import Unscheduled from "./Unscheduled";
 
 const source1460 = {
     id: 0,
@@ -27,6 +28,7 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
     const [flightData, setFlightData] = useState([]);
     const [destinationData, setDestinationData] = useState([]);
     const [inputValue, setInputValue] = useState("");
+    const [isChecked, setIsChecked] = useState(false)
     
     function toggleSourceInfo(id) {
         const newSource = id === 0 ? source1460 : source1451;
@@ -146,27 +148,60 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
         setDestinationData((prev) => prev.filter((row) => row.id !== id));
     };
 
+    const handleCheckboxChange = () => {
+        setIsChecked(!isChecked)
+    }
+
     return (
         <div>
             {/* Flight buttons */}
-            <div className="flex justify-center">
-                <button 
-                    onClick={() => toggleSourceInfo(0)}
-                    // className="px-4 py-2 m-2 bg-blue-500 text-white rounded"
-                    className={styles.button1460}
-                >
-                    Flight 1460
-                </button>
-                <button 
-                    onClick={() => toggleSourceInfo(1)}
-                    className={styles.button1451}
-                >
-                    Flight 1451
-                </button>
+            <div className="">
+                <div className="flex justify-center">
+                    <button 
+                        onClick={() => toggleSourceInfo(0)}
+                        // className="px-4 py-2 m-2 bg-blue-500 text-white rounded"
+                        className={styles.button1460}
+                    >
+                        Flight 1460
+                    </button>
+                    <button 
+                        onClick={() => toggleSourceInfo(1)}
+                        className={styles.button1451}
+                    >
+                        Flight 1451
+                    </button>
+                </div>
+                {/* Toggle Button */}
+                <div className="px-3 justify-end">
+                    <div>
+                        <label className='flex cursor-pointer select-none items-center'>
+                            <div className='relative'>
+                                <input
+                                    type='checkbox'
+                                    checked={isChecked}
+                                    onChange={handleCheckboxChange}
+                                    className='sr-only'
+                                />
+                                <div
+                                    className={`box block h-8 w-14 rounded-full ${
+                                    isChecked ? 'bg-red-700' : 'bg-dark'
+                                    }`}
+                                ></div>
+                                <div
+                                    className={`absolute left-1 top-1 flex h-6 w-6 items-center 
+                                        justify-center rounded-full bg-white transition 
+                                        ${isChecked ? 'translate-x-full' : ''
+                                    }`}
+                                ></div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
             </div>
 
             <div id="executive-summary" className="p-3">
                 <h1 className={styles.heading}>Executive Summary</h1>
+
                 {/* Local Sort Plan */}
                 <div className={styles.section}>
                     <h2 className={styles.subHeading}>Local Sort Plan</h2>
@@ -182,7 +217,11 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                         <tbody>
                             {flightData.map((row) => (
                                 <tr key={row.id}>
-                                    <td className={styles.td}>{row.name}</td>
+                                    <td className={styles.td}>
+                                        <div className="font-bold">
+                                           {row.name} 
+                                        </div>
+                                    </td>
                                     <td className={styles.td}>
                                         {row.id === 0 ? (
                                             <input
@@ -211,7 +250,6 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                                 </tr>
                             ))}
                         </tbody>
-
                     </table>
                 </div>
 
@@ -290,12 +328,15 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                             {destinationData.map((row) => (
                                 <tr key={row.id}>
                                     <td className={styles.td}>
-                                        <input
-                                            type="text"
-                                            className={styles.input}
-                                            value={row.destination} // Controlled via React state
-                                            onChange={(e) => handleInputChange(row.id, "destination", e.target.value)} 
-                                        />
+                                        <div className="font-bold">
+                                            <input
+                                                type="text"
+                                                className={styles.input}
+                                                value={row.destination} // Controlled via React state
+                                                onChange={(e) => handleInputChange(row.id, "destination", e.target.value)} 
+                                            />  
+                                        </div>
+                                        
                                     </td>
                                     <td className={styles.td}>
                                         <input
@@ -322,6 +363,9 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                         </tbody>
                     </table>
                 </div>
+
+                {/* Unscheduled Routes */}
+                {isChecked && <div className={styles.section}><Unscheduled/></div>}
 
                 {/* Other Summary Comments */}
                 <div className={styles.section}>
