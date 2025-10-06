@@ -22,7 +22,7 @@ const source1451 = {
 
 export default function NormalReformer({ data, totalWeight, heavyWeight, expressWeight }) {
     const [sourceInfo, setSourceInfo] = useState(source1460);
-    const [scheduledTime, setScheduledTime] = useState("05:58");
+    const [scheduledTime, setScheduledTime] = useState("06:04");
     const [sortStartTime, setSortStartTime] = useState("");
     const [sortEndTime, setSortEndTime] = useState("");
     const [flightData, setFlightData] = useState([]);
