@@ -1,26 +1,52 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from "../styles/base.module.css"
 
 export default function Unscheduled() {
-    const route = "Route: "
-    const routeName = "IF290"
-    const arrivalTime = ""
-    const sortDown = ""
+    const [routeLabel, setRouteLabel] = useState("Route: ")
+    const [routeName, setRouteName] = useState("IF290")
+    const [sortStart, setSortStart] = useState("7:00")
+    const [pieceCount, setPieceCount] = useState("")
+    const [sortDown, setSortDown] = useState("8:00")
 
-    function onChange() {
+    // CHICKEN
+    function sendChicken() {
         const message = 'Chicken'
         console.log(message)
+    }
+
+    // Handle the Route Name Change
+    const handleRouteChange = (event) => {
+        setRouteName(event.target.value)
+        sendChicken()
+    }
+
+    // Handle the Sort Start Change
+    const handleStartChange = (event) => {
+        setSortStart(event.target.value)
+        sendChicken()
+    }
+
+    // Handle the Piece Count Input
+    const handlePieceCount = (event) => {
+        setPieceCount(event.target.value)
+        sendChicken()
+    }
+
+    // Handle the Sort Down Change
+    const handleSortDownChange = (event) => {
+        setSortDown(event.target.value)
+        sendChicken()
     }
 
     return (
         <div>
             <div className={styles.subHeading}>
-                {route} 
+                {routeLabel} 
                 <input
                     type="text"
                     className={styles.input}
                     value={routeName}
-                    onChange={onChange}
+                    onChange={handleRouteChange}
                 />
             </div>
             <table className={styles.table}>
@@ -37,15 +63,16 @@ export default function Unscheduled() {
                             <input
                                 type="text"
                                 className={styles.input}
-                                value={arrivalTime}
-                                onChange={onChange}
+                                value={sortStart}
+                                onChange={handleStartChange}
                             />
                         </td>
                         <td className={styles.td}>
                             <input
                                 type="text"
                                 className={styles.input}
-                                // value=''
+                                value={pieceCount}
+                                onChange={handlePieceCount}
                             />
                         </td>
                         <td className={styles.td}>
@@ -53,7 +80,7 @@ export default function Unscheduled() {
                                 type="text"
                                 className={styles.input}
                                 value={sortDown}
-                                onChange={onChange}
+                                onChange={handleSortDownChange}
                             />
                         </td>
                     </tr>
