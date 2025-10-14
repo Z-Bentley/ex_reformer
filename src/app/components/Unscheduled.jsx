@@ -26,7 +26,7 @@ export default function Unscheduled() {
             <table className={styles.table}>
                 <thead>
                     <tr>
-                        <th className={styles.th}>Arrival</th>
+                        <th className={styles.th}>Sort Start</th>
                         <th className={styles.th}>Piece Count</th>
                         <th className={styles.th}>Sort Down</th>
                     </tr>
