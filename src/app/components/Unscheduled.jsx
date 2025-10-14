@@ -4,8 +4,8 @@ import styles from "../styles/base.module.css"
 export default function Unscheduled() {
     const route = "Route: "
     const routeName = "IF290"
-    const arrivalTime = "07:00"
-    const sortDown = "8:00"
+    const arrivalTime = ""
+    const sortDown = ""
 
     function onChange() {
         const message = 'Chicken'
