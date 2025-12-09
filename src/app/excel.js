@@ -1,4 +1,5 @@
 import * as XLSX from "xlsx";
+import tareConfig from "./tare_weight.json"
 
 // Debugging helper function
 function debugWithConsole(...infoToSend) {
@@ -25,26 +26,39 @@ export function fileSelector(callback) {
 }
 
 // Reads the Excel file and processes its data
-function readExcel(file, callback) {
+async function readExcel(file, callback) {
     const reader = new FileReader();
     reader.onload = (e) => {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: "array" });
+        try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: "array" });
 
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
+            const sheet = workbook.Sheets[workbook.SheetNames[0]];
+            const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-        const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+            const processedData = processData(jsonData);
 
-        const processedData = processData(jsonData);
+            const totalWeight = calcWeight(processedData);
+            const heavyWeight = calcWeight(processedData, "CVGRT");
 
-        // Calculate weights based on processed data
-        const totalWeight = calcWeight(processedData);
-        const heavyWeight = calcWeight(processedData, "CVGRT");
-        const expressWeight = parseInt(totalWeight.replace(/,/g, ""), 10) - parseInt(heavyWeight.replace(/,/g, ""), 10);
+            const expressWeight =
+                parseInt(totalWeight.replace(/,/g, ""), 10) -
+                parseInt(heavyWeight.replace(/,/g, ""), 10);
 
-        // Send all necessary data back to the callback
-        callback(file, processedData, totalWeight, heavyWeight, expressWeight.toLocaleString());
+            const actualPounds = calcActualPounds(processedData);
+
+            callback(
+                file,
+                processedData,
+                totalWeight,
+                heavyWeight,
+                expressWeight.toLocaleString(),
+                actualPounds
+            );
+        } catch (err) {
+            console.error("Error processing Excel file:", err);
+            callback(file, [], "0", "0", "0", "0");
+        }
     };
     reader.readAsArrayBuffer(file);
 }
@@ -69,21 +83,31 @@ function processData(jsonData) {
 }
 
 // Calculate total or filtered weight from the processed data
-function calcWeight(sheet, dest = null) {
+function calcWeight(sheet, destFilter = null) {
     let totalWeight = 0;
 
     try {
         for (let row of sheet) {
             const destCell = row.Destination; // Column E
-            const weightCell = row.Weight; // Column D
+            const weightCell = row.Weight;    // Column D
 
-            if (weightCell) {
-                if (!dest || destCell === dest) {
-                    totalWeight += parseInt(weightCell, 10);
+            if (!weightCell) continue;
+
+            let include = true;
+
+            if (destFilter) {
+                if (typeof destFilter === "string") {
+                    include = destCell === destFilter;
+                } else if (typeof destFilter === "function") {
+                    include = destFilter(destCell);
                 }
             }
 
-            debugWithConsole(destCell, weightCell, totalWeight);
+            if (include) {
+                totalWeight += parseInt(weightCell, 10) || 0;
+            }
+
+            // debugWithConsole(destCell, weightCell, totalWeight);
         }
     } catch (error) {
         console.error("Error in calcWeight:", error);
@@ -92,7 +116,36 @@ function calcWeight(sheet, dest = null) {
     return totalWeight.toLocaleString(); // Format with commas
 }
 
-// Manageable Time
+function calcActualPounds(sheet) {
+    let totalActual = 0;
+    const tareEntries = tareConfig?.uld || {};
+
+    for (const row of sheet) {
+        const dest = row.Destination;
+        const gross = parseInt(row.Weight, 10) || 0;
+        const uld = row.Uld;
+
+        if (!gross || !uld) continue;
+        if (dest !== "CVGR") continue; // Only CVGR counts
+
+        const prefix = uld.substring(0, 3).toUpperCase();
+
+        const tare = tareEntries[prefix]?.tare_weight
+            ? parseInt(tareEntries[prefix].tare_weight, 10)
+            : 0;
+
+        const net = Math.max(0, gross - tare);
+        totalActual += net;
+    }
+
+    return totalActual.toLocaleString();
+}
+
+
+
+
+
+// ****** Manageable Time ******
 function timeToMinutes(time) {
     const [hours, minutes] = time.split(":").map(Number);
     return hours * 60 + minutes;

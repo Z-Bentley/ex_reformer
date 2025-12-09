@@ -20,7 +20,7 @@ const source1451 = {
     isOutbound: true
 }
 
-export default function NormalReformer({ data, totalWeight, heavyWeight, expressWeight }) {
+export default function NormalReformer({ data, totalWeight, heavyWeight, expressWeight, actualPounds }) {
     const [sourceInfo, setSourceInfo] = useState(source1460);
     const [scheduledTime, setScheduledTime] = useState("06:04");
     const [sortStartTime, setSortStartTime] = useState("");
@@ -28,7 +28,11 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
     const [flightData, setFlightData] = useState([]);
     const [destinationData, setDestinationData] = useState([]);
     const [inputValue, setInputValue] = useState("");
-    const [isChecked, setIsChecked] = useState(false)
+    const [isChecked, setIsChecked] = useState(false);
+    const [rootCausePounds, setRootCausePounds] = useState("");
+    const [editableTotalWeight, setEditableTotalWeight] = useState(totalWeight || "");
+    const [editableHeavyWeight, setEditableHeavyWeight] = useState(heavyWeight || "");
+    const [editableExpressWeight, setEditableExpressWeight] = useState(expressWeight || "");
     
     function toggleSourceInfo(id) {
         const newSource = id === 0 ? source1460 : source1451;
@@ -95,6 +99,32 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
         }
     }, [scheduledTime, sortStartTime, sortEndTime]);
 
+    useEffect(() => {
+        // whenever the parent passes a new actualPounds, update local state
+        setRootCausePounds(actualPounds || "");
+    }, [actualPounds]);
+
+    // When parent recalculates weights (new file), sync local editable fields
+    useEffect(() => {
+        setEditableTotalWeight(totalWeight || "--");
+    }, [totalWeight]);
+
+    useEffect(() => {
+        setEditableHeavyWeight(heavyWeight || "--");
+    }, [heavyWeight]);
+
+    useEffect(() => {
+        setEditableExpressWeight(expressWeight || "--");
+    }, [expressWeight]);
+
+    // Recalculate Express = Total - Heavy whenever either editable value changes
+    useEffect(() => {
+        const total = parseInt(String(editableTotalWeight).replace(/,/g, ""), 10) || 0;
+        const heavy = parseInt(String(editableHeavyWeight).replace(/,/g, ""), 10) || 0;
+        const express = Math.max(0, total - heavy);
+        setEditableExpressWeight(express.toLocaleString());
+    }, [editableTotalWeight, editableHeavyWeight]);
+
     // Handle input change for Aircraft Arrival time
     const handleInputChange = (id, field, value) => {
         setDestinationData((prevData) =>
@@ -135,6 +165,12 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
     const handleInputText = (event) => {
         setInputValue(event.target.value)
     }
+
+    // Root Cause Actual Pounds
+    const handleActualPoundsChange = (event) => {
+        setRootCausePounds(event.target.value);
+    };
+
 
     // Add New Route
     const addNewRoute = () => {
@@ -280,7 +316,7 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                             <td className={styles.td}></td>
                             <td className={styles.td}></td>
                             <td className={styles.td}>
-                            <input type="text" className={styles.input} />
+                                <input type="text" className={styles.input} />
                             </td>
                             <td className={styles.td}>Other</td>
                         </tr>
@@ -295,9 +331,18 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                                 />
                             </td>
                             <td className={styles.td}></td>
+
+                            {/* Actual Pounds Calc */}
                             <td className={styles.td}>
                                 <p>Plan= 6550lbs</p>
-                                <p>Actual: <input className={styles.input}></input></p>
+                                <p>Actual: 
+                                    <input 
+                                        type="text" 
+                                        className={styles.input}
+                                        value={rootCausePounds}
+                                        onChange={handleActualPoundsChange}
+                                    />
+                                </p>
                                 <p>Plan= 655 pieces</p>
                                 <p>Actual: <input className={styles.input}></input></p>
                             </td>
@@ -336,7 +381,6 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                                                 onChange={(e) => handleInputChange(row.id, "destination", e.target.value)} 
                                             />  
                                         </div>
-                                        
                                     </td>
                                     <td className={styles.td}>
                                         <input
@@ -370,9 +414,45 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                 {/* Other Summary Comments */}
                 <div className={styles.section}>
                     <h2 className={styles.subHeading}>Other Summary Comments</h2>
-                    <p>Total Payload = {totalWeight}</p>
-                    <p>Heavyweight = {heavyWeight}</p>
-                    <p>Express = {expressWeight}</p>
+
+                    <table className={styles.table}>
+                        <thead>
+                            <tr>
+                                <th className={styles.th}>Category</th>
+                                <th className={styles.th}>Value (lbs)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td className={styles.td}>Total Payload</td>
+                                <td className={styles.td}>
+                                    <input
+                                        type="text"
+                                        className={styles.input}
+                                        value={editableTotalWeight}
+                                        onChange={(e) => setEditableTotalWeight(e.target.value)}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className={styles.td}>Heavyweight</td>
+                                <td className={styles.td}>
+                                    <input
+                                        type="text"
+                                        className={styles.input}
+                                        value={editableHeavyWeight}
+                                        onChange={(e) => setEditableHeavyWeight(e.target.value)}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className={styles.td}>Express</td>
+                                <td className={`${styles.td} ${styles.textCenter}`}>
+                                    {editableExpressWeight}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

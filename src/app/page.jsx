@@ -11,14 +11,16 @@ export default function EditableTimeTable() {
   const [heavyWeight, setHeavyWeight] = useState("--");
   const [expressWeight, setExpressWeight] = useState("--");
   const [showButton, setShowButton] = useState(false);
+  const [actualPounds, setActualPounds] = useState("");
 
   // Show the file selected
-  const handleFileSelect = (file, processedData, total, heavy, express) => {
+  const handleFileSelect = (file, processedData, total, heavy, express, pounds) => {
     setFileName(file.name);
     setData(processedData);
     setTotalWeight(total);
     setHeavyWeight(heavy);
     setExpressWeight(express);
+    setActualPounds(pounds)
   };
 
   // Function to copy the Executive Summary
@@ -116,6 +118,7 @@ export default function EditableTimeTable() {
           totalWeight={totalWeight}
           heavyWeight={heavyWeight}
           expressWeight={expressWeight}
+          actualPounds={actualPounds}
         />
       </div>
     </div>
