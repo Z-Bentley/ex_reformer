@@ -73,6 +73,7 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
         if (!scheduledTime) return;
     
         const [startTime, endTime] = excel.setSortTimes(scheduledTime);
+        
         setSortStartTime(startTime);
         setSortEndTime(endTime);
     
@@ -171,7 +172,6 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
         setRootCausePounds(event.target.value);
     };
 
-
     // Add New Route
     const addNewRoute = () => {
         const newId = destinationData.length > 0 ? Math.max(...destinationData.map(r => r.id)) + 1 : 1;
@@ -187,6 +187,23 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked)
     }
+
+    const parseVarianceToMinutes = (varianceStr) => {
+        if (!varianceStr) return 0;
+        // Handle things like "+05", "-10", "05", etc.
+        const cleaned = String(varianceStr).trim().replace("+", "");
+        const minutes = parseInt(cleaned, 10);
+        return isNaN(minutes) ? 0 : minutes;
+    };
+
+    // Compute "minutes made up" = Sort End variance - Aircraft Arrival variance
+    const aircraftRow = flightData.find((r) => r.id === 0); // Aircraft Arrival
+    const sortEndRow = flightData.find((r) => r.id === 2);  // Sort End
+
+    const aircraftVarianceMinutes = parseVarianceToMinutes(aircraftRow?.variance);
+    const sortEndVarianceMinutes = parseVarianceToMinutes(sortEndRow?.variance);
+
+    const madeUpMinutes = sortEndVarianceMinutes - aircraftVarianceMinutes;
 
     return (
         <div>
@@ -282,7 +299,14 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                                             onChange={(e) => handleFlightEdit(row.id, "actual", e.target.value)}
                                         />
                                     </td>
-                                    <td className={`${styles.td} ${styles.textCenter}`}>{row.variance}</td>
+                                    <td className={`${styles.td} ${styles.textCenter}`} data-sort-end-variance={row.id === 2 ? "true" : "false"}>
+                                        <div>{row.variance}</div>
+                                        {row.id === 2 && !isNaN(madeUpMinutes) && (
+                                            <div className={`${styles.textCenter}`}>
+                                                {madeUpMinutes} minutes made up
+                                            </div>
+                                        )}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
