@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import styles from "../styles/base.module.css";
+// import styles from "../styles/base.module.css";
+import styles from "../styles/default.module.css";
 import * as excel from "../excel";
 import { Button } from "@/components/ui/button";
 import Unscheduled from "./Unscheduled";
@@ -19,6 +20,13 @@ const source1451 = {
     trucks: "/data/truckRoutes1451.json", 
     isOutbound: true
 }
+const source1460Tuesday = {
+    id: 2,
+    name: "Flight 1460",
+    flight: "/data/flight1460.json",
+    trucks: "/data/truckRoutes1460Tuesday.json",
+    isOutbound: false
+}
 
 export default function NormalReformer({ data, totalWeight, heavyWeight, expressWeight, actualPounds }) {
     const [sourceInfo, setSourceInfo] = useState(source1460);
@@ -35,9 +43,13 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
     const [editableExpressWeight, setEditableExpressWeight] = useState(expressWeight || "");
     
     function toggleSourceInfo(id) {
-        const newSource = id === 0 ? source1460 : source1451;
+        const newSource =
+            id === 0 ? source1460 :
+            id === 1 ? source1451 :
+            source1460Tuesday;
+
         setSourceInfo(newSource);
-    
+
         fetch(newSource.flight)
             .then((response) => response.json())
             .then((json) => {
@@ -223,35 +235,41 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                     >
                         Flight 1451
                     </button>
+                    <button 
+                        onClick={() => toggleSourceInfo(2)}
+                        className={styles.button1460}
+                    >
+                        Flight 1460 (Tue)
+                    </button>
                 </div>
                 {/* Toggle Button */}
                 <div className="px-3 justify-end">
                     <div>
-                        <label className='flex cursor-pointer select-none items-center'>
-                            <div className='relative'>
+                        <label className={styles.toggleLabel}>
+                            <div className={styles.toggleWrapper}>
                                 <input
-                                    type='checkbox'
+                                    type="checkbox"
                                     checked={isChecked}
                                     onChange={handleCheckboxChange}
-                                    className='sr-only'
+                                    className={styles.toggleInput}
                                 />
+
                                 <div
-                                    className={`box block h-8 w-14 rounded-full ${
-                                    isChecked ? 'bg-red-700' : 'bg-dark'
+                                    className={`${styles.toggleTrack} ${
+                                        isChecked ? styles.toggleTrackActive : ""
                                     }`}
-                                ></div>
+                                />
+
                                 <div
-                                    className={`absolute left-1 top-1 flex h-6 w-6 items-center 
-                                        justify-center rounded-full bg-white transition 
-                                        ${isChecked ? 'translate-x-full' : ''
+                                    className={`${styles.toggleThumb} ${
+                                        isChecked ? styles.toggleThumbActive : ""
                                     }`}
-                                ></div>
+                                />
                             </div>
                         </label>
                     </div>
                 </div>
             </div>
-
             <div id="executive-summary" className="p-3">
                 <h1 className={styles.heading}>Executive Summary</h1>
 

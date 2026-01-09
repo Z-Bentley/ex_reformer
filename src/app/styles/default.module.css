@@ -1,182 +1,378 @@
-.main {
-  /* background-color: white; */
-  /* background: linear-gradient(
-      135deg, 
-      #00dce4,
-      #4c4eaf, 
-      #2e577d, 
-      #b7d6a5, 
-      #2dc954, 
-      #2e7d35, 
-      #a5d6b1, 
-      #21b3a7,
-      #00dce4,
-      #4c4eaf, 
-      #2e577d, 
-      #b3d6a5, 
-      #0e660e, 
-      #2e7d55, 
-      #afd6a5, 
-      #32b321
-  ); */
-  background-image: url('/public/forest.jpg');
+/* =========================================================
+   THEME TOKENS (CSS Variables)
+   ========================================================= */
+:root {
+  /* ----- Background (Blue) ----- */
+  --bg-blue: #081a2f;
+  --bg-blue-dark: #050f1f;
+  --bg-blue-glow: rgba(0, 140, 255, 0.18);
+
+  /* ----- Primary Accents ----- */
+  --green: #1aff6a;
+  --green-soft: rgba(26, 255, 106, 0.12);
+  --green-panel: rgba(10, 40, 22, 0.88);
+
+  --red: #ff3b3b;
+  --red-soft: rgba(255, 59, 59, 0.25);
+
+  --blue: #3aa8ff;
+  --blue-soft: rgba(58, 168, 255, 0.25);
+
+  /* ----- Text ----- */
+  --text-main: #eafff3;
+  --text-muted: rgba(234, 255, 243, 0.7);
+
+  /* ----- Borders / Shadows ----- */
+  --border: rgba(26, 255, 106, 0.25);
+
+  --shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  --shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
 
-/* Buttons */
+/* =========================================================
+   PAGE / LAYOUT
+   ========================================================= */
+.main {
+  background:
+    radial-gradient(1000px 600px at 20% 10%, var(--bg-blue-glow), transparent 60%),
+    radial-gradient(800px 500px at 90% 20%, rgba(255, 59, 59, 0.12), transparent 65%),
+    linear-gradient(180deg, var(--bg-blue), var(--bg-blue-dark));
+  color: var(--text-main);
+}
+
+/* =========================================================
+   TOP COMMAND BAR (Select / Copy / File Name / Secret Download)
+   ========================================================= */
 .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 10px;
+  padding: 12px 16px;
+  border-radius: 14px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(8, 26, 47, 0.85),
+    rgba(5, 15, 31, 0.95)
+  );
+
+  border: 1px solid rgba(58, 168, 255, 0.25);
+  box-shadow: var(--shadow-soft);
 }
 
 .leftButtons {
   display: flex;
-  gap: 10px;
-}
-
-.button {
-  padding: 8px;
-  border-radius: 4px;
-  background-color: #ff000069;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-}
-
-.copyButton {
-  padding: 8px;
-  background-color: #f63b3b;
-  color: white;
-  border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-}
-
-.selectedFile {
-  margin-top: 8px;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 .rightButtons {
   display: flex;
   align-items: center;
-  position: relative;
 }
 
-.secretArea {
-  width: 30px;
-  height: 30px;
+/* --- Select File (Green) --- */
+.button {
+  padding: 8px 16px;
+  border-radius: 10px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(26, 255, 106, 0.22),
+    rgba(0, 0, 0, 0.35)
+  );
+
+  border: 1px solid rgba(26, 255, 106, 0.55);
+  color: var(--text-main);
+
+  font-weight: 600;
+  box-shadow: var(--shadow-soft);
   cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+/* --- Copy Executive Summary (Red + Blue) --- */
+.copyButton {
+  padding: 8px 18px;
+  border-radius: 10px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255, 59, 59, 0.28),
+    rgba(58, 168, 255, 0.22)
+  );
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: var(--text-main);
+
+  font-weight: 700;
+  letter-spacing: 0.3px;
+
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.35);
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.copyButton:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.12);
+}
+
+.copyButton:active {
+  transform: translateY(0);
+}
+
+/* --- Selected file label (Green) --- */
+.selectedFile {
+  margin-left: 6px;
+  font-size: 0.9rem;
+
+  color: rgba(26, 255, 106, 0.85);
+  font-weight: 600;
+
+  text-shadow: 0 0 4px rgba(26, 255, 106, 0.35);
+}
+
+/* --- Secret download --- */
+.secretArea {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0.05;
+  transition: opacity 0.25s ease;
 }
 
 .secretArea:hover {
-  opacity: 0.5;
+  opacity: 0.35;
 }
 
 .downloadButton {
-  background: transparent;
+  background: none;
   border: none;
   font-size: 20px;
   cursor: pointer;
-  color: #ff4500;
-  margin-left: 10px;
+
+  color: var(--blue);
+  text-shadow: 0 0 8px rgba(58, 168, 255, 0.6);
 }
 
-/* Flight Buttons */
+/* =========================================================
+   FLIGHT SOURCE BUTTONS (1460 / 1451)
+   ========================================================= */
 .button1460 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
   margin: 0.5rem;
-  background-color: #880000;
-  color: white;
-  border-radius: 0.25rem;
-  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+
+  background: linear-gradient(180deg, var(--blue-soft), rgba(0,0,0,0.25));
+  border: 1px solid var(--blue);
+  color: var(--text-main);
+
+  border-radius: 12px;
+  box-shadow: var(--shadow-soft);
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+
+  text-shadow: 0 0 8px rgba(58,168,255,0.6);
+  transition: all 0.15s ease;
+}
+
+.button1460:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
 }
 
 .button1451 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
   margin: 0.5rem;
-  background-color: rgb(255, 0, 0);
-  color: white;
-  border-radius: 0.25rem;
-  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+
+  background: linear-gradient(180deg, var(--red-soft), rgba(0,0,0,0.25));
+  border: 1px solid var(--red);
+  color: var(--text-main);
+
+  border-radius: 12px;
+  box-shadow: var(--shadow-soft);
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+
+  text-shadow: 0 0 8px rgba(255,59,59,0.6);
+  transition: all 0.15s ease;
 }
 
-/* Executive Summary */
+.button1451:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+/* =========================================================
+   HEADINGS / TYPOGRAPHY
+   ========================================================= */
 .heading {
   padding: 16px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 8px;
-  color: white;
-  text-shadow: 0 0 5px #0ff,
-  0 0 10px rgb(255, 0, 0),
-  0 0 20px rgb(151, 0, 0),
-  0 0 10px rgb(255, 0, 0),
-  0 0 20px rgb(151, 0, 0),
-  0 0 40px rgb(129, 0, 0),
-  0 0 80px rgb(255, 0, 0);
-}
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-main);
 
-.section {
-  border: black;
-  background: radial-gradient(
-      circle, 
-      rgba(255,0,0,1) 0%, 
-      rgba(121,9,9,1) 40%, 
-      rgba(255,0,0,1) 100%
-  );
-  padding: 16px;
-  margin: 30px;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 5px rgb(0, 0, 0);
+  text-shadow:
+    0 0 6px var(--green),
+    0 0 12px rgba(26,255,106,0.4);
 }
 
 .subHeading {
   font-size: 1.125rem;
-  font-weight: bold;
-  margin-bottom: 8px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+
+  color: rgba(26, 255, 106, 0.95);
+
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+
+  border-bottom: 2px solid rgba(58, 168, 255, 0.45);
+
+  text-shadow: 0 0 6px rgba(26, 255, 106, 0.35);
 }
 
+/* =========================================================
+   PANELS / SECTIONS
+   ========================================================= */
+.section {
+  background: linear-gradient(
+    180deg,
+    var(--green-panel),
+    rgba(6, 25, 14, 0.95)
+  );
+
+  border: 1px solid var(--border);
+  padding: 16px;
+  margin: 30px;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+/* =========================================================
+   TABLES
+   ========================================================= */
 .table {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid #6b7280;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.th,
+.th {
+  background: rgba(26, 255, 106, 0.18);
+  color: var(--text-main);
+  font-weight: 800;
+  border: 1px solid var(--border);
+}
+
 .td {
-  border: 1px solid #6b7280;
-  padding: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  padding: 10px;
   text-align: center;
-  background-color: rgb(255, 122, 122);
 }
 
+/* =========================================================
+   INPUTS
+   ========================================================= */
 .input {
   width: 100%;
-  padding: 4px;
-  background-color: rgb(253, 167, 246);
-  color: white;
-  border: 1px solid #d1d5db;
-  border-color: gray;
-  color: black;
+  padding: 6px 8px;
+  border-radius: 10px;
+
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(26, 255, 106, 0.35);
+  color: var(--text-main);
 }
 
-.textCenter {
-  text-align: center;
+.input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(26, 255, 106, 0.25);
+}
+
+/* =========================================================
+   TOGGLE SWITCH
+   ========================================================= */
+.toggleLabel {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggleWrapper {
+  position: relative;
+}
+
+/* Hidden checkbox */
+.toggleInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Track */
+.toggleTrack {
+  display: block;
+  width: 3.5rem;   /* w-14 */
+  height: 2rem;    /* h-8 */
+  border-radius: 9999px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(58, 168, 255, 0.35),
+    rgba(0, 0, 0, 0.4)
+  );
+
+  border: 1px solid rgba(58, 168, 255, 0.45);
+  box-shadow: var(--shadow-soft);
+
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Track when checked (RED) */
+.toggleTrackActive {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 59, 59, 0.55),
+    rgba(0, 0, 0, 0.4)
+  );
+  border-color: rgba(255, 59, 59, 0.65);
+}
+
+/* Thumb */
+.toggleThumb {
+  position: absolute;
+  left: 0.25rem; /* left-1 */
+  top: 0.25rem;
+
+  width: 1.5rem;  /* w-6 */
+  height: 1.5rem; /* h-6 */
+
+  background: white;
+  border-radius: 9999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+  transition: transform 0.2s ease;
+}
+
+/* Thumb slide */
+.toggleThumbActive {
+  transform: translateX(1.5rem);
 }

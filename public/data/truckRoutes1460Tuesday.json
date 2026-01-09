@@ -1,0 +1,79 @@
+[
+    {
+        "id": 1,
+        "destination": "Docs",
+        "schedule": "06:30",
+        "actual": "06:34",
+        "variance": "+4"
+    },
+    {
+        "id": 2,
+        "destination": "OXD15",
+        "schedule": "06:59",
+        "actual": "07:06",
+        "variance": "+7"
+    },
+    {
+        "id": 3,
+        "destination": "CVG15",
+        "schedule": "06:59",
+        "actual": "06:56",
+        "variance": "-3"
+    },
+    {
+        "id": 4,
+        "destination": "LUK15",
+        "schedule": "06:59",
+        "actual": "07:01",
+        "variance": "+2"
+    },
+    {
+        "id": 5,
+        "destination": "CVG78 (DNCA)",
+        "schedule": "07:00",
+        "actual": "07:08",
+        "variance": "+8"
+    },
+    {
+        "id": 6,
+        "destination": "FFT41 (PDJA)",
+        "schedule": "07:20",
+        "actual": "07:20",
+        "variance": "+0"
+    },
+    {
+        "id": 7,
+        "destination": "CVG10",
+        "schedule": "07:25",
+        "actual": "07:29",
+        "variance": "+4"
+    },
+    {
+        "id": 8,
+        "destination": "OXD14",
+        "schedule": "07:26",
+        "actual": "07:24",
+        "variance": "-2"
+    },
+    {
+        "id": 9,
+        "destination": "CVG14",
+        "schedule": "07:26",
+        "actual": "07:33",
+        "variance": "+7"
+    },
+    {
+        "id": 10,
+        "destination": "LUK14",
+        "schedule": "07:26",
+        "actual": "07:28",
+        "variance": "+2"
+    },
+    {
+        "id": 11,
+        "destination": "FFT14",
+        "schedule": "07:26",
+        "actual": "07:21",
+        "variance": "-5"
+    }
+]
