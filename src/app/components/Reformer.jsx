@@ -72,11 +72,21 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
             .catch((error) => console.error("Error loading flight data:", error));
     }, [sourceInfo]);
 
-    // Load Truck Routes Data from JSON
+    // Load Truck Routes Data from JSON (sorted by schedule time)
     useEffect(() => {
+        const toMinutes = (t) => {
+            if (!t) return Number.POSITIVE_INFINITY;
+            const [h, m] = String(t).trim().split(":").map(Number);
+            if (Number.isNaN(h) || Number.isNaN(m)) return Number.POSITIVE_INFINITY;
+            return h * 60 + m;
+        };
+
         fetch(sourceInfo.trucks)
             .then((response) => response.json())
-            .then((json) => setDestinationData(json))
+            .then((json) => {
+                const sorted = [...json].sort((a, b) => toMinutes(a.schedule) - toMinutes(b.schedule));
+                setDestinationData(sorted);
+            })
             .catch((error) => console.error("Error loading truck routes:", error));
     }, [sourceInfo]);
 
@@ -139,20 +149,29 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
     }, [editableTotalWeight, editableHeavyWeight]);
 
     // Handle input change for Aircraft Arrival time
+    const toMinutes = (t) => {
+        if (!t) return Number.POSITIVE_INFINITY;
+        const [h, m] = String(t).trim().split(":").map(Number);
+        if (Number.isNaN(h) || Number.isNaN(m)) return Number.POSITIVE_INFINITY;
+        return h * 60 + m;
+    };
+
     const handleInputChange = (id, field, value) => {
-        setDestinationData((prevData) =>
-            prevData.map((row) => {
+        setDestinationData((prevData) => {
+            const updated = prevData.map((row) => {
                 if (row.id === id) {
                     const updatedRow = { ...row, [field]: value };
-    
                     if (field === "actual" || field === "schedule") {
                         updatedRow.variance = excel.calculateVariance(updatedRow.schedule, updatedRow.actual);
                     }
                     return updatedRow;
                 }
                 return row;
-            })
-        );
+            });
+
+            // Always keep rows ordered by schedule
+            return [...updated].sort((a, b) => toMinutes(a.schedule) - toMinutes(b.schedule));
+        });
     };
     
     const handleFlightEdit = (id, field, value) => {
