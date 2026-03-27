@@ -177,7 +177,7 @@ export function calculateVariance(schedule, actual) {
 // Set the scheduled Sort Start and Sort End to the Aircraft Arrival
 export function setSortTimes(time) {
     const aircraftArrivalMin = timeToMinutes(time);
-    const sortStartMinutes = aircraftArrivalMin + 24;
+    const sortStartMinutes = aircraftArrivalMin + 20;
     const sortEndMinutes = sortStartMinutes + 20;
 
     const startTime = minutesToTime(sortStartMinutes);
