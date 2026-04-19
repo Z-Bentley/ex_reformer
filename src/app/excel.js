@@ -63,7 +63,6 @@ async function readExcel(file, callback) {
     reader.readAsArrayBuffer(file);
 }
 
-
 // Process data from the Excel sheet into a structured JSON format
 function processData(jsonData) {
     if (!jsonData || jsonData.length === 0) {
@@ -141,10 +140,6 @@ function calcActualPounds(sheet) {
 
     return totalActual.toLocaleString();
 }
-
-
-
-
 
 // ****** Manageable Time ******
 function timeToMinutes(time) {

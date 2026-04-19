@@ -41,6 +41,8 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
     const [editableTotalWeight, setEditableTotalWeight] = useState(totalWeight || "");
     const [editableHeavyWeight, setEditableHeavyWeight] = useState(heavyWeight || "");
     const [editableExpressWeight, setEditableExpressWeight] = useState(expressWeight || "");
+    const [flowRate, setFlowRate] = useState("");
+    const [actualPieces, setActualPieces] = useState("");
     
     function toggleSourceInfo(id) {
         const newSource =
@@ -49,26 +51,22 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
             source1460Tuesday;
 
         setSourceInfo(newSource);
-
-        fetch(newSource.flight)
-            .then((response) => response.json())
-            .then((json) => {
-                setFlightData(json);
-                const newScheduledTime = json[0].schedule;
-                setScheduledTime(newScheduledTime);
-
-                const [startTime, endTime] = excel.setSortTimes(newScheduledTime);
-                setSortStartTime(startTime);
-                setSortEndTime(endTime);
-            })
-            .catch((error) => console.error("Error loading new flight data:", error));
     }
 
     // Load Flight Data from JSON
     useEffect(() => {
         fetch(sourceInfo.flight)
             .then((response) => response.json())
-            .then((json) => setFlightData(json))
+            .then((json) => {
+                setFlightData(json);
+
+                const newScheduledTime = json?.[0]?.schedule || "06:00";
+                setScheduledTime(newScheduledTime);
+
+                const [startTime, endTime] = excel.setSortTimes(newScheduledTime);
+                setSortStartTime(startTime);
+                setSortEndTime(endTime);
+            })
             .catch((error) => console.error("Error loading flight data:", error));
     }, [sourceInfo]);
 
@@ -129,16 +127,24 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
 
     // When parent recalculates weights (new file), sync local editable fields
     useEffect(() => {
-        setEditableTotalWeight(totalWeight || "--");
+        setEditableTotalWeight(totalWeight || 0);
     }, [totalWeight]);
 
     useEffect(() => {
-        setEditableHeavyWeight(heavyWeight || "--");
+        setEditableHeavyWeight(heavyWeight || 0);
     }, [heavyWeight]);
 
     useEffect(() => {
-        setEditableExpressWeight(expressWeight || "--");
+        setEditableExpressWeight(expressWeight || 0);
     }, [expressWeight]);
+
+    // Flow Rate
+    useEffect(() => {
+        const sortStartActual = flightData.find((row) => row.id === 1)?.actual;
+        const sortEndActual = flightData.find((row) => row.id === 2)?.actual;
+
+        getFlowRate(actualPieces, sortStartActual, sortEndActual);
+    }, [actualPieces, flightData]);
 
     // Recalculate Express = Total - Heavy whenever either editable value changes
     useEffect(() => {
@@ -236,6 +242,34 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
 
     const madeUpMinutes = sortEndVarianceMinutes - aircraftVarianceMinutes;
 
+    // Updating Flowrate as the excel is added and times are updated
+    const getFlowRate = (pieceCount, startTime, endTime) => {
+        if (!startTime || !endTime) {
+            setFlowRate("");
+            return;
+        }
+
+        const [sh, sm] = String(startTime).split(":").map(Number);
+        const [eh, em] = String(endTime).split(":").map(Number);
+
+        if ([sh, sm, eh, em].some(Number.isNaN)) {
+            setFlowRate("");
+            return;
+        }
+
+        const minutes = (eh * 60 + em) - (sh * 60 + sm);
+        const pieces = Number(String(pieceCount).replace(/,/g, ""));
+
+        if (minutes <= 0 || Number.isNaN(pieces) || pieces <= 0) {
+            setFlowRate("");
+            return;
+        }
+
+        const rate = pieces / (minutes / 60);
+
+        setFlowRate(Math.round(rate).toLocaleString());
+    };
+
     return (
         <div>
             {/* Flight buttons */}
@@ -291,6 +325,10 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
             </div>
             <div id="executive-summary" className="p-3">
                 <h1 className={styles.heading}>Executive Summary</h1>
+<div className={styles.flowRateContainer}>
+    <span className={styles.flowRateLabel}>Flow Rate: </span>
+    <span className={styles.flowRateValue}>{flowRate || "--"}</span>
+</div>
 
                 {/* Local Sort Plan */}
                 <div className={styles.section}>
@@ -338,11 +376,11 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                                     </td>
                                     <td className={`${styles.td} ${styles.textCenter}`} data-sort-end-variance={row.id === 2 ? "true" : "false"}>
                                         <div>{row.variance}</div>
-                                        {row.id === 2 && !isNaN(madeUpMinutes) && (
+                                        {/* {row.id === 2 && !isNaN(madeUpMinutes) && (
                                             <div className={`${styles.textCenter}`}>
                                                 {madeUpMinutes} minutes made up
                                             </div>
-                                        )}
+                                        )} */}
                                     </td>
                                 </tr>
                             ))}
@@ -405,7 +443,18 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                                     />
                                 </p>
                                 <p>Plan= 655 pieces</p>
-                                <p>Actual: <input className={styles.input}></input></p>
+                                <p>
+                                    Actual:
+                                    <input
+                                        type="text"
+                                        className={styles.input}
+                                        value={actualPieces}
+                                        onChange={(e) => {
+                                            const raw = e.target.value.replace(/,/g, "").replace(/[^\d]/g, "");
+                                            setActualPieces(raw ? Number(raw).toLocaleString() : "");
+                                        }}
+                                    />
+                                </p>
                             </td>
                             <td className={styles.td}></td>
                             <td className={styles.td}></td>
