@@ -281,9 +281,11 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                     <button onClick={() => toggleSourceInfo(1)} className={styles.button1451}>
                         Flight 1451
                     </button>
-                    <button onClick={() => toggleSourceInfo(2)} className={styles.button1460}>
+                    
+                    {/* Temp remove in case Tue is the same as rest of week again */}
+                    {/* <button onClick={() => toggleSourceInfo(2)} className={styles.button1460}>
                         Flight 1460 (Tue)
-                    </button>
+                    </button> */}
                 </div>
                 {/* Toggle Button */}
                 <div className="px-3 justify-end">

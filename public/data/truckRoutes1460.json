@@ -1,78 +1,71 @@
 [
     {
         "id": 1,
-        "destination": "Docs LUK77/CVG77/OXD77/FFT77",
-        "schedule": "06:30",
-        "actual": "07:14",
-        "variance": "+44"
-    },
-    {
-        "id": 2,
-        "destination": "LUK02",
-        "schedule": "06:41",
-        "actual": "07:25",
-        "variance": "+44"
-    },
-    {
-        "id": 3,
         "destination": "OXD02",
         "schedule": "06:41",
         "actual": "07:25",
         "variance": "+44"
     },
     {
-        "id": 4,
+        "id": 2,
         "destination": "CVG02",
         "schedule": "06:41",
         "actual": "07:25",
         "variance": "+44"
     },
     {
-        "id": 5,
-        "destination": "CVG78 (DNCA)",
-        "schedule": "07:00",
-        "actual": "07:44",
+        "id": 3,
+        "destination": "LUK02 RT",
+        "schedule": "06:41",
+        "actual": "07:25",
         "variance": "+44"
     },
     {
+        "id": 4,
+        "destination": "LUK19",
+        "schedule": "07:10",
+        "actual": "07:54",
+        "variance": "+44"
+    },
+    {
+        "id": 5,
+        "destination": "CVG10 RT",
+        "schedule": "07:25",
+        "actual": "06:41",
+        "variance": "-44"
+    },
+        {
         "id": 6,
-        "destination": "LUK03",
-        "schedule": "07:11",
-        "actual": "07:55",
+        "destination": "FFT19",
+        "schedule": "07:10",
+        "actual": "07:54",
         "variance": "+44"
     },
     {
         "id": 7,
-        "destination": "FFT03",
-        "schedule": "07:11",
-        "actual": "07:55",
+        "destination": "OXD19",
+        "schedule": "07:10",
+        "actual": "07:54",
         "variance": "+44"
     },
     {
         "id": 8,
-        "destination": "OXD03",
-        "schedule": "07:11",
-        "actual": "07:55",
+        "destination": "CVG19",
+        "schedule": "07:10",
+        "actual": "07:54",
         "variance": "+44"
     },
     {
         "id": 9,
-        "destination": "CVG03",
-        "schedule": "07:11",
-        "actual": "07:55",
+        "destination": "Docs LUK77/CVG77/OXD77/FFT77",
+        "schedule": "06:30",
+        "actual": "07:14",
         "variance": "+44"
     },
     {
         "id": 10,
         "destination": "FFT41 (PDJA)",
         "schedule": "07:20",
-        "actual": "06:41",
-        "variance": "-44"
-    },
-    {
-        "id": 11,
-        "destination": "CVG10",
-        "schedule": "07:25",
         "actual": "06:41",
         "variance": "-44"
     }
