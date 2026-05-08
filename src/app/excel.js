@@ -76,7 +76,71 @@ function processData(jsonData) {
 
         if (row[1] && row[3]) { // Adjust column indexes as needed
             results.push({ Uld: row[1], Weight: row[3], Destination: row[4] });
-            debugWithConsole(row[1], row[3]);
+        }
+    }
+    return results;
+}
+
+export function tableSelector(callback){
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".xlsx,.xls";
+
+    input.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            readTable(file, callback);
+        }
+    });
+
+    input.click();
+}
+
+async function readTable(file, callback){
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: "array" });
+
+            const sheet = workbook.Sheets[workbook.SheetNames[0]];
+            const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+            const processedData = processTable(jsonData);
+
+            callback(
+                file,
+                processedData,
+            );
+        } catch (err) {
+            console.error("Error processing Excel file:", err);
+            callback(file, []);
+        }
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+// Process data from the Excel sheet into a structured JSON format
+function processTable(jsonData) {
+    if (!jsonData || jsonData.length === 0) {
+        console.warn("No data found in the sheet!");
+        return [];
+    }
+
+    const results = [];
+    for (let i = 8; i < jsonData.length; i++) { // Skip header, row 1 = 0
+        const row = jsonData[i];
+
+        if (row[1] && row[3]) { // Adjust column indexes as needed
+            results.push({ 
+                Position: row[0], 
+                Uld: row[1], 
+                Weight: row[3], 
+                Destination: row[4],
+                Service_CD: row[6],
+                Load_CD: row[7],
+                Pkg_Dests: row[8]
+            });
         }
     }
     return results;

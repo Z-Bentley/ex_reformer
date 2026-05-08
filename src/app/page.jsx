@@ -4,6 +4,7 @@ import * as excel from "./excel.js"
 // import styles from "./styles/base.module.css"
 import styles from "./styles/default.module.css";
 import Reformer from "./components/Reformer.jsx";
+import Link from "next/link";
 
 export default function EditableTimeTable() {
   const [fileName, setFileName] = useState("");
@@ -112,9 +113,16 @@ export default function EditableTimeTable() {
         <div className={styles.rightButtons}>
           <div className={styles.secretArea} onClick={() => setShowButton(true)}>
             {showButton && (
-              <button onClick={downloadExampleFile} className={styles.downloadButton}>
-                📥
-              </button>
+                <Link href="/table" className={styles.tableLink}>
+                  Table
+                </Link>
+            )}
+          </div>
+          <div className={styles.secretArea} onClick={() => setShowButton(true)}>
+            {showButton && (
+                <button onClick={downloadExampleFile} className={styles.downloadButton}>
+                  📥
+                </button>
             )}
           </div>
         </div>

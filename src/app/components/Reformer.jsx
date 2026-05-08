@@ -234,13 +234,13 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
     };
 
     // Compute "minutes made up" = Sort End variance - Aircraft Arrival variance
-    const aircraftRow = flightData.find((r) => r.id === 0); // Aircraft Arrival
-    const sortEndRow = flightData.find((r) => r.id === 2);  // Sort End
+    // const aircraftRow = flightData.find((r) => r.id === 0); // Aircraft Arrival
+    // const sortEndRow = flightData.find((r) => r.id === 2);  // Sort End
 
-    const aircraftVarianceMinutes = parseVarianceToMinutes(aircraftRow?.variance);
-    const sortEndVarianceMinutes = parseVarianceToMinutes(sortEndRow?.variance);
+    // const aircraftVarianceMinutes = parseVarianceToMinutes(aircraftRow?.variance);
+    // const sortEndVarianceMinutes = parseVarianceToMinutes(sortEndRow?.variance);
 
-    const madeUpMinutes = sortEndVarianceMinutes - aircraftVarianceMinutes;
+    // const madeUpMinutes = sortEndVarianceMinutes - aircraftVarianceMinutes;
 
     // Updating Flowrate as the excel is added and times are updated
     const getFlowRate = (pieceCount, startTime, endTime) => {
@@ -275,23 +275,13 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
             {/* Flight buttons */}
             <div className="">
                 <div className="flex justify-center">
-                    <button 
-                        onClick={() => toggleSourceInfo(0)}
-                        // className="px-4 py-2 m-2 bg-blue-500 text-white rounded"
-                        className={styles.button1460}
-                    >
+                    <button onClick={() => toggleSourceInfo(0)} className={styles.button1460}>
                         Flight 1460
                     </button>
-                    <button 
-                        onClick={() => toggleSourceInfo(1)}
-                        className={styles.button1451}
-                    >
+                    <button onClick={() => toggleSourceInfo(1)} className={styles.button1451}>
                         Flight 1451
                     </button>
-                    <button 
-                        onClick={() => toggleSourceInfo(2)}
-                        className={styles.button1460}
-                    >
+                    <button onClick={() => toggleSourceInfo(2)} className={styles.button1460}>
                         Flight 1460 (Tue)
                     </button>
                 </div>
@@ -306,13 +296,11 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                                     onChange={handleCheckboxChange}
                                     className={styles.toggleInput}
                                 />
-
                                 <div
                                     className={`${styles.toggleTrack} ${
                                         isChecked ? styles.toggleTrackActive : ""
                                     }`}
                                 />
-
                                 <div
                                     className={`${styles.toggleThumb} ${
                                         isChecked ? styles.toggleThumbActive : ""
@@ -325,10 +313,10 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
             </div>
             <div id="executive-summary" className="p-3">
                 <h1 className={styles.heading}>Executive Summary</h1>
-<div className={styles.flowRateContainer}>
-    <span className={styles.flowRateLabel}>Flow Rate: </span>
-    <span className={styles.flowRateValue}>{flowRate || "--"}</span>
-</div>
+                <div className={styles.flowRateContainer}>
+                    <span className={styles.flowRateLabel}>Flow Rate: </span>
+                    <span className={styles.flowRateValue}>{flowRate || "--"}</span>
+                </div>
 
                 {/* Local Sort Plan */}
                 <div className={styles.section}>
