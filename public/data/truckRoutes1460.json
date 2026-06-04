@@ -73,7 +73,7 @@
         "id": 11,
         "destination": "NKYG2",
         "schedule": "07:30",
-        "actual": "07:14",
-        "variance": "-16"
+        "actual": "07:34",
+        "variance": "+4"
     }
 ]
