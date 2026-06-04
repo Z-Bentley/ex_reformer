@@ -68,5 +68,12 @@
         "schedule": "07:20",
         "actual": "06:41",
         "variance": "-44"
+    },
+{
+        "id": 11,
+        "destination": "NKYG2",
+        "schedule": "07:30",
+        "actual": "07:14",
+        "variance": "-16"
     }
 ]
