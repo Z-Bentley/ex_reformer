@@ -315,6 +315,7 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
             </div>
             <div id="executive-summary" className="p-3">
                 <h1 className={styles.heading}>Executive Summary</h1>
+                <div className={styles.flowRateContainer}>Planned Flow Rate: 2,100</div>
                 <div className={styles.flowRateContainer}>
                     <span className={styles.flowRateLabel}>Flow Rate: </span>
                     <span className={styles.flowRateValue}>{flowRate || "--"}</span>
@@ -423,7 +424,7 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
 
                             {/* Actual Pounds Calc */}
                             <td className={styles.td}>
-                                <p>Plan= 6550lbs</p>
+                                <p>Plan= 6,700lbs</p>
                                 <p>Actual: 
                                     <input 
                                         type="text" 
@@ -432,7 +433,7 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                                         onChange={handleActualPoundsChange}
                                     />
                                 </p>
-                                <p>Plan= 655 pieces</p>
+                                <p>Plan= 672 pieces</p>
                                 <p>
                                     Actual:
                                     <input
