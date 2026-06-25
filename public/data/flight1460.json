@@ -1,24 +1,27 @@
-[
-    { 
-        "id": 0, 
-        "name": "Aircraft Arrival", 
-        "schedule": "06:00", 
-        "actual": "6:29", 
-        "variance": "+29" 
-    },
-    { 
-        "id": 1, 
-        "name": "Sort Start", 
-        "schedule": "06:20", 
-        "actual": "6:43", 
-        "variance": "+23" 
-    },
-    { 
-        "id": 2, 
-        "name": "Sort End", 
-        "schedule": "06:40", 
-        "actual": "7:10", 
-        "variance": "+30" 
-    }
-  ]
-  
+{
+    "plannedPieceCount": 672,
+    "plannedFlowRate": 2100,
+    "sortPlan":[
+        { 
+            "id": 0, 
+            "name": "Aircraft Arrival", 
+            "schedule": "06:00", 
+            "actual": "6:29", 
+            "variance": "+29" 
+        },
+        { 
+            "id": 1, 
+            "name": "Sort Start", 
+            "schedule": "06:20", 
+            "actual": "6:43", 
+            "variance": "+23" 
+        },
+        { 
+            "id": 2,
+            "name": "Sort End", 
+            "schedule": "06:40", 
+            "actual": "7:10", 
+            "variance": "+30" 
+        }
+    ]
+}

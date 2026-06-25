@@ -30,6 +30,8 @@ const source1460Tuesday = {
 
 export default function NormalReformer({ data, totalWeight, heavyWeight, expressWeight, actualPounds }) {
     const [sourceInfo, setSourceInfo] = useState(source1460);
+    const [plannedPieceCount, setPlannedPieceCount] = useState("672");
+    const [plannedFlowRate, setPlannedFlowRate] = useState("2100");
     const [scheduledTime, setScheduledTime] = useState("06:00");
     const [sortStartTime, setSortStartTime] = useState("");
     const [sortEndTime, setSortEndTime] = useState("");
@@ -58,9 +60,13 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
         fetch(sourceInfo.flight)
             .then((response) => response.json())
             .then((json) => {
-                setFlightData(json);
+                const sortPlan = json.sortPlan || json;
 
-                const newScheduledTime = json?.[0]?.schedule || "06:00";
+                setFlightData(sortPlan);
+                setPlannedPieceCount(json.plannedPieceCount || "")
+                setPlannedFlowRate(json.plannedFlowRate || "")
+
+                const newScheduledTime = sortPlan?.[0]?.schedule || "06:00";
                 setScheduledTime(newScheduledTime);
 
                 const [startTime, endTime] = excel.setSortTimes(newScheduledTime);
@@ -315,7 +321,9 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
             </div>
             <div id="executive-summary" className="p-3">
                 <h1 className={styles.heading}>Executive Summary</h1>
-                <div className={styles.flowRateContainer}>Planned Flow Rate: 2,100</div>
+                <div className={styles.flowRateContainer}>
+                    Planned Flow Rate: {plannedFlowRate}
+                </div>
                 <div className={styles.flowRateContainer}>
                     <span className={styles.flowRateLabel}>Flow Rate: </span>
                     <span className={styles.flowRateValue}>{flowRate || "--"}</span>
@@ -433,7 +441,7 @@ export default function NormalReformer({ data, totalWeight, heavyWeight, express
                                         onChange={handleActualPoundsChange}
                                     />
                                 </p>
-                                <p>Plan= 672 pieces</p>
+                                <p>Plan= {plannedPieceCount} pieces</p>
                                 <p>
                                     Actual:
                                     <input
