@@ -1,7 +1,8 @@
 {
     "plannedPieceCount": 672,
     "plannedFlowRate": 2100,
-    "sortPlan":[
+    "plannedPounds": 6700,
+    "sortPlan": [
         { 
             "id": 0, 
             "name": "Aircraft Arrival", 
@@ -22,6 +23,100 @@
             "schedule": "06:39", 
             "actual": "7:10", 
             "variance": "+31" 
+        }
+    ],
+    "truckRoutes":[
+        {
+            "id": 1,
+            "destination": "Docs LUK77/CVG77/OXD77/FFT77/HAO77/AXV77",
+            "schedule": "06:30",
+            "actual": "07:14",
+            "variance": "+44"
+        },
+        {
+            "id": 2,
+            "destination": "HAO18",
+            "schedule": "06:35",
+            "actual": "07:19",
+            "variance": "+44"
+        },
+        {
+            "id": 3,
+            "destination": "CVG18",
+            "schedule": "06:35",
+            "actual": "07:19",
+            "variance": "+44"
+        },
+        {
+            "id": 4,
+            "destination": "LUK18",
+            "schedule": "06:35",
+            "actual": "07:19",
+            "variance": "+44"
+        },
+        {
+            "id": 5,
+            "destination": "FFT18",
+            "schedule": "06:35",
+            "actual": "07:19",
+            "variance": "+44"
+        },
+            {
+            "id": 6,
+            "destination": "FFT41",
+            "schedule": "07:20",
+            "actual": "07:19",
+            "variance": "-1"
+        },
+        {
+            "id": 7,
+            "destination": "CVG19",
+            "schedule": "07:17",
+            "actual": "07:51",
+            "variance": "+44"
+        },
+        {
+            "id": 8,
+            "destination": "CVG19",
+            "schedule": "07:17",
+            "actual": "07:51",
+            "variance": "+44"
+        },
+        
+        {
+            "id": 10,
+            "destination": "OXD19",
+            "schedule": "07:17",
+            "actual": "07:51",
+            "variance": "+44"
+        },
+        {
+            "id": 11,
+            "destination": "FFT19",
+            "schedule": "07:17",
+            "actual": "07:51",
+            "variance": "+44"
+        },
+        {
+            "id": 12,
+            "destination": "CVG10 RT",
+            "schedule": "07:25",
+            "actual": "06:41",
+            "variance": "-44"
+        },
+        {
+            "id": 13,
+            "destination": "HAO19",
+            "schedule": "07:17",
+            "actual": "07:51",
+            "variance": "+44"
+        },
+        {
+            "id": 14,
+            "destination": "LUK02",
+            "schedule": "06:41",
+            "actual": "07:25",
+            "variance": "+44"
         }
     ]
 }
