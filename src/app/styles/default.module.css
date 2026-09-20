@@ -316,6 +316,27 @@
   filter: brightness(1.1);
 }
 
+.button2203 {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+
+  background: linear-gradient(180deg, var(--bg-blue-dark), rgba(0, 0, 0, 0.25));
+  border: 1px solid var(--bg-blue-glow);
+  color: var(--text-main);
+
+  border-radius: 12px;
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+
+  text-shadow: 0 0 8px rgba(7, 32, 255, 0.6);
+  transition: all 0.15s ease;
+}
+
+.button2203:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
 /* =========================================================
    HEADINGS / TYPOGRAPHY
    ========================================================= */
@@ -537,4 +558,386 @@
 .noFile p {
   margin-top: 8px;
   color: var(--text-muted);
+}
+
+/* =========================================================
+   LIVE CLOCK PANEL
+   ========================================================= */
+
+.clockPanel {
+  position: relative;
+  overflow: hidden;
+
+  margin: 1.25rem 0 1.75rem;
+  padding: 1rem;
+
+  border: 1px solid rgba(58, 168, 255, 0.28);
+  border-radius: 16px;
+
+  background:
+    radial-gradient(
+      600px 160px at 15% 0%,
+      rgba(58, 168, 255, 0.16),
+      transparent 65%
+    ),
+    radial-gradient(
+      500px 180px at 100% 100%,
+      rgba(26, 255, 106, 0.09),
+      transparent 70%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(8, 26, 47, 0.94),
+      rgba(5, 15, 31, 0.98)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    var(--shadow);
+}
+
+.clockPanel::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+
+  opacity: 0.3;
+
+  background-image:
+    linear-gradient(
+      rgba(58, 168, 255, 0.04) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(58, 168, 255, 0.04) 1px,
+      transparent 1px
+    );
+
+  background-size: 24px 24px;
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.8),
+    transparent
+  );
+}
+
+.clockPanelHeader {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  padding: 0.25rem 0.25rem 1rem;
+}
+
+.clockEyebrow {
+  margin: 0 0 0.2rem;
+
+  color: rgba(58, 168, 255, 0.8);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.clockTitle {
+  margin: 0;
+
+  color: var(--text-main);
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.clockLiveIndicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+
+  padding: 0.35rem 0.6rem;
+  border: 1px solid rgba(26, 255, 106, 0.32);
+  border-radius: 999px;
+
+  background: rgba(26, 255, 106, 0.08);
+  color: var(--green);
+
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.clockLiveDot {
+  width: 0.48rem;
+  height: 0.48rem;
+  border-radius: 50%;
+
+  background: var(--green);
+  box-shadow: 0 0 8px rgba(26, 255, 106, 0.9);
+
+  animation: clockPulse 1.6s ease-in-out infinite;
+}
+
+.clockGrid {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.clockCard {
+  position: relative;
+  overflow: hidden;
+
+  min-height: 156px;
+  padding: 1rem;
+
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.07),
+      rgba(0, 0, 0, 0.24)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 8px 20px rgba(0, 0, 0, 0.26);
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.clockCard::after {
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 35%;
+  height: 100%;
+
+  content: "";
+  pointer-events: none;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    transparent
+  );
+
+  transform: skewX(-18deg);
+  transition: left 0.6s ease;
+}
+
+.clockCard:hover {
+  transform: translateY(-2px);
+}
+
+.clockCard:hover::after {
+  left: 125%;
+}
+
+.zuluClockCard {
+  border-color: rgba(58, 168, 255, 0.36);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 8px 20px rgba(0, 0, 0, 0.26),
+    0 0 18px rgba(58, 168, 255, 0.08);
+}
+
+.zuluClockCard:hover {
+  border-color: rgba(58, 168, 255, 0.7);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 12px 26px rgba(0, 0, 0, 0.34),
+    0 0 24px rgba(58, 168, 255, 0.2);
+}
+
+.localClockCard {
+  border-color: rgba(26, 255, 106, 0.3);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 8px 20px rgba(0, 0, 0, 0.26),
+    0 0 18px rgba(26, 255, 106, 0.06);
+}
+
+.localClockCard:hover {
+  border-color: rgba(26, 255, 106, 0.68);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 12px 26px rgba(0, 0, 0, 0.34),
+    0 0 24px rgba(26, 255, 106, 0.17);
+}
+
+.clockCardTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.clockBadge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 0.22rem 0.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 5px;
+
+  background: rgba(0, 0, 0, 0.28);
+  color: var(--text-main);
+
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.zuluClockCard .clockBadge {
+  border-color: rgba(58, 168, 255, 0.52);
+  color: #a8d9ff;
+}
+
+.localClockCard .clockBadge {
+  border-color: rgba(26, 255, 106, 0.48);
+  color: #afffc8;
+}
+
+.clockStatusText {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: right;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.clockLabel {
+  margin: 1rem 0 0.25rem;
+
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.clockValue {
+  display: block;
+
+  color: var(--text-main);
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    Menlo,
+    monospace;
+  font-size: clamp(2rem, 5vw, 3.35rem);
+  font-weight: 800;
+  letter-spacing: -0.08em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+
+  text-shadow: 0 0 14px rgba(234, 255, 243, 0.13);
+}
+
+.zuluClockCard .clockValue {
+  color: #d5efff;
+  text-shadow:
+    0 0 10px rgba(58, 168, 255, 0.45),
+    0 0 24px rgba(58, 168, 255, 0.14);
+}
+
+.localClockCard .clockValue {
+  color: #ddffe8;
+  text-shadow:
+    0 0 10px rgba(26, 255, 106, 0.42),
+    0 0 24px rgba(26, 255, 106, 0.12);
+}
+
+.clockFooter {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.38rem;
+
+  margin-top: 0.8rem;
+
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.clockFooterDivider {
+  color: rgba(58, 168, 255, 0.65);
+}
+
+@keyframes clockPulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 7px rgba(26, 255, 106, 0.75);
+  }
+
+  50% {
+    opacity: 0.42;
+    box-shadow: 0 0 14px rgba(26, 255, 106, 1);
+  }
+}
+
+@media (max-width: 640px) {
+  .clockPanel {
+    padding: 0.75rem;
+    border-radius: 13px;
+  }
+
+  .clockPanelHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .clockGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .clockCard {
+    min-height: auto;
+  }
+
+  .clockValue {
+    font-size: 2.65rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clockLiveDot {
+    animation: none;
+  }
+
+  .clockCard,
+  .clockCard::after {
+    transition: none;
+  }
+
+  .clockCard:hover {
+    transform: none;
+  }
 }

@@ -13,6 +13,7 @@ import OtherSummaryComments from "./OtherSummaryComments";
 import flight1460 from "../../../public/data/flight1460.json";
 import flight1451 from "../../../public/data/flight1451.json";
 import flight2260 from "../../../public/data/flight2260.json";
+import flight2203 from "../../../public/data/flight2203.json";
 
 const datasets = {
     1460: {
@@ -23,6 +24,9 @@ const datasets = {
     },
     2260: {
         flight: flight2260
+    },
+    2203: {
+        flight: flight2203
     }
 };
 
@@ -57,6 +61,8 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
             setActiveId(1451);
         } else if (id === 2) {
             setActiveId(2260);
+        } else if (id === 3) {
+            setActiveId(2203);
         } else {
             setActiveId(1460);
         }
@@ -352,6 +358,18 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
 
     const flight2260Layout = (
         <>
+            {flowRateSection}
+            {localSortPlan}
+            {rootCauseOfDelay}
+            {outboundTruckRoutes}
+            {unscheduledRoutes}
+            {summaryComments}
+        </>
+    )
+
+    const flight2203Layout = (
+        <>
+            {flowRateSection}
             {localSortPlan}
             {rootCauseOfDelay}
             {outboundTruckRoutes}
@@ -373,6 +391,9 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
                     </button>
                     <button onClick={() => toggleSourceInfo(2)} className={styles.button2260}>
                         Flight 2260
+                    </button>
+                    <button onClick={() => toggleSourceInfo(3)} className={styles.button2203}>
+                        Flight 2203
                     </button>
                 </div>
                 {/* Toggle Button */}
@@ -406,6 +427,7 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
                 {activeId === 1460 && flight1460Layout}
                 {activeId === 1451 && flight1451Layout}
                 {activeId === 2260 && flight2260Layout}
+                {activeId === 2203 && flight2203Layout}
             </div>
         </div>
     );
