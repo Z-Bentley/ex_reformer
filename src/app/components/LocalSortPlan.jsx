@@ -1,6 +1,7 @@
 "use client";
 
 import styles from "../styles/default.module.css";
+import * as excel from "../excel";
 
 export default function LocalSortPlan({
     activeId,
@@ -37,7 +38,7 @@ export default function LocalSortPlan({
                                         className={styles.input}
                                         value={scheduledTime}
                                         onChange={(event) => {
-                                            const newTime = event.target.value;
+                                            const newTime = excel.formatTimeInput(event.target.value);
                                             onScheduledTimeChange(newTime);
                                             onFlightEdit(row.id, "schedule", newTime);
                                         }}

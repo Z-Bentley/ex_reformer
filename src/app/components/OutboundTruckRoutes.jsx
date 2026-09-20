@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import styles from "../styles/default.module.css";
+import * as excel from "../excel";
 
 export default function OutboundTruckRoutes({
     destinationData,
@@ -54,7 +55,7 @@ export default function OutboundTruckRoutes({
                                     className={styles.input}
                                     value={row.schedule || ""}
                                     onChange={(event) =>
-                                        onRouteChange(row.id, "schedule", event.target.value)
+                                        onRouteChange(row.id, "schedule", excel.formatTimeInput(event.target.value))
                                     }
                                 />
                             </td>
@@ -65,7 +66,7 @@ export default function OutboundTruckRoutes({
                                     className={styles.input}
                                     value={row.actual || ""}
                                     onChange={(event) =>
-                                        onRouteChange(row.id, "actual", event.target.value)
+                                        onRouteChange(row.id, "actual", excel.formatTimeInput(event.target.value))
                                     }
                                 />
                             </td>

@@ -206,42 +206,70 @@ function calcActualPounds(sheet) {
 }
 
 // ****** Manageable Time ******
+const MINUTES_PER_DAY = 24 * 60;
+const MIDNIGHT_ROLLOVER_THRESHOLD = 12 * 60;
+
 function timeToMinutes(time) {
     const [hours, minutes] = time.split(":").map(Number);
     return hours * 60 + minutes;
 };
 
-function minutesToTime(minutes) {
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-    return `${String(hours).padStart(2, "0")}:${String(remainingMinutes).padStart(2, "0")}`;
+function minutesToTime(totalMinutes) {
+    const normalizedMinutes = 
+        ((totalMinutes % MINUTES_PER_DAY) + MINUTES_PER_DAY) % MINUTES_PER_DAY;
+
+    const hours = Math.floor(normalizedMinutes / 60);
+    const minutes = normalizedMinutes % 60;
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+}
+
+export function formatTimeInput(value) {
+    const digits = String(value).replace(/\D/g, "").slice(0, 4);
+
+    if (digits.length <= 2) {
+        return digits;
+    }
+
+    return `${digits.slice(0, 2)}:${digits.slice(2)}`;
 }
 
 // Validate if input is in HH:MM format
 function isValidTime(time) {
-    return /^\d{1,2}:\d{2}$/.test(time);
-};
+    return /^([01]?\d|2[0-3]):[0-5]\d$/.test(String(time).trim());
+}
 
 // Function to calculate the variance (time difference)
 export function calculateVariance(schedule, actual) {
-    if (!isValidTime(schedule) || !isValidTime(actual)) return "--";
+    if (!isValidTime(schedule) || !isValidTime(actual)) {
+        return "--";
+    }
 
     const scheduleMinutes = timeToMinutes(schedule);
     const actualMinutes = timeToMinutes(actual);
-    const diff = actualMinutes - scheduleMinutes;
 
-    return diff === 0 ? "+0" : `${diff >= 0 ? "+" : ""}${diff}`;
-};
+    let difference = actualMinutes - scheduleMinutes;
+
+    if (difference < -MIDNIGHT_ROLLOVER_THRESHOLD) {
+        difference += MINUTES_PER_DAY;
+    }
+
+    return difference === 0
+        ? "+0"
+        : `${difference >= 0 ? "+" : ""}${difference}`;
+}
 
 // Set the scheduled Sort Start and Sort End to the Aircraft Arrival
 export function setSortTimes(time) {
-    const aircraftArrivalMin = timeToMinutes(time);
-    const sortStartMinutes = aircraftArrivalMin + 20;
+    if (!isValidTime(time)) {
+        return ["", ""];
+    }
+
+    const aircraftArrivalMinutes = timeToMinutes(time);
+    const sortStartMinutes = aircraftArrivalMinutes + 20;
     const sortEndMinutes = sortStartMinutes + 20;
 
-    const startTime = minutesToTime(sortStartMinutes);
-    const sortEnd = minutesToTime(sortEndMinutes)
-
-    // debugWithConsole(time, aircraftArrivalMin, sortStartMinutes, sortEndMinutes, startTime, sortEnd)
-    return [startTime, sortEnd];
+    return [
+        minutesToTime(sortStartMinutes),
+        minutesToTime(sortEndMinutes),
+    ];
 }

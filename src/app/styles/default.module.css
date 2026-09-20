@@ -98,7 +98,7 @@
   align-items: center;
 }
 
-/* --- Select File (Green) --- */
+/* --- Select File --- */
 .button {
   padding: 8px 16px;
   border-radius: 10px;
@@ -157,7 +157,7 @@
   transform: translateY(0);
 }
 
-/* --- Selected file label (Green) --- */
+/* --- Selected file label --- */
 .selectedFile {
   margin-left: 6px;
   font-size: 0.9rem;
@@ -291,6 +291,27 @@
 }
 
 .button1451:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+.button2260 {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+
+  background: linear-gradient(180deg, var(--green-panel), rgba(0, 0, 0, 0.25));
+  border: 1px solid var(--green);
+  color: var(--text-main);
+
+  border-radius: 12px;
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+
+  text-shadow: 0 0 8px rgba(58, 255, 68, 0.6);
+  transition: all 0.15s ease;
+}
+
+.button2260:hover {
   transform: translateY(-1px);
   filter: brightness(1.1);
 }

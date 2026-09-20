@@ -12,6 +12,7 @@ import OtherSummaryComments from "./OtherSummaryComments";
 
 import flight1460 from "../../../public/data/flight1460.json";
 import flight1451 from "../../../public/data/flight1451.json";
+import flight2260 from "../../../public/data/flight2260.json";
 
 const datasets = {
     1460: {
@@ -19,6 +20,9 @@ const datasets = {
     },
     1451: {
         flight: flight1451
+    },
+    2260: {
+        flight: flight2260
     }
 };
 
@@ -51,6 +55,8 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
     function toggleSourceInfo(id) {
         if (id === 1) {
             setActiveId(1451);
+        } else if (id === 2) {
+            setActiveId(2260);
         } else {
             setActiveId(1460);
         }
@@ -75,7 +81,7 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
 
         // Sort and load the local truck array instantly
         // const sortedTrucks = [...dataset.flight.truckRoutes].sort((a, b) => toMinutes(a.schedule) - toMinutes(b.schedule));
-        setDestinationData(dataset.flight.truckRoutes);
+        setDestinationData(dataset.flight.truckRoutes || "");
 
     }, [activeId]);
 
@@ -167,7 +173,8 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
             });
 
             // Always keep rows ordered by schedule
-            return [...updated].sort((a, b) => toMinutes(a.schedule) - toMinutes(b.schedule));
+            // return [...updated].sort((a, b) => toMinutes(a.schedule) - toMinutes(b.schedule));
+            return updated;
         });
     };
     
@@ -261,6 +268,98 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
         setFlowRate(Math.round(rate).toLocaleString());
     };
 
+    // Sections turned Components
+    const localSortPlan = (
+        <LocalSortPlan
+            activeId={activeId}
+            flightData={flightData}
+            scheduledTime={scheduledTime}
+            onScheduledTimeChange={setScheduledTime}
+            onFlightEdit={handleFlightEdit}
+        />
+    )
+
+    const rootCauseOfDelay = (
+        <RootCauseOfDelay
+            inputValue={inputValue}
+            onInputValueChange={setInputValue}
+            rootCausePounds={rootCausePounds}
+            onRootCausePoundsChange={setRootCausePounds}
+            plannedPieceCount={plannedPieceCount}
+            plannedPounds={plannedPounds}
+            actualPieces={actualPieces}
+            onActualPiecesChange={setActualPieces}
+        />
+    )
+
+    const outboundTruckRoutes = (
+        <OutboundTruckRoutes
+            destinationData={destinationData}
+            onAddRoute={addNewRoute}
+            onDeleteRoute={deleteRoute}
+            onRouteChange={handleInputChange}
+        />
+    )
+
+    const summaryComments = (
+        <OtherSummaryComments
+            editableTotalWeight={editableTotalWeight}
+            editableHeavyWeight={editableHeavyWeight}
+            editableExpressWeight={editableExpressWeight}
+            onTotalWeightChange={setEditableTotalWeight}
+            onHeavyWeightChange={setEditableHeavyWeight}
+        />
+    )
+
+    const flowRateSection = (
+        <>
+            <div className={styles.flowRateContainer}>
+                Planned Flow Rate: {plannedFlowRate}
+            </div>
+            <div className={styles.flowRateContainer}>
+                <span className={styles.flowRateLabel}>Flow Rate: </span>
+                <span className={styles.flowRateValue}>{flowRate || "--"}</span>
+            </div>
+        </>
+    )
+
+    const unscheduledRoutes = isChecked ? (
+        <div className={styles.section}><Unscheduled/></div>
+    ) : null;
+
+    // Flight Layouts
+    const flight1460Layout = (
+        <>
+            {flowRateSection}
+            {localSortPlan}
+            {rootCauseOfDelay}
+            {outboundTruckRoutes}
+            {unscheduledRoutes}
+            {summaryComments}
+        </>
+    )
+
+    const flight1451Layout = (
+        <>
+            {flowRateSection}
+            {localSortPlan}
+            {rootCauseOfDelay}
+            {outboundTruckRoutes}
+            {unscheduledRoutes}
+            {summaryComments}
+        </>
+    )
+
+    const flight2260Layout = (
+        <>
+            {localSortPlan}
+            {rootCauseOfDelay}
+            {outboundTruckRoutes}
+            {unscheduledRoutes}
+            {summaryComments}
+        </>
+    )
+
     return (
         <div>
             {/* Flight buttons */}
@@ -271,6 +370,9 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
                     </button>
                     <button onClick={() => toggleSourceInfo(1)} className={styles.button1451}>
                         Flight 1451
+                    </button>
+                    <button onClick={() => toggleSourceInfo(2)} className={styles.button2260}>
+                        Flight 2260
                     </button>
                 </div>
                 {/* Toggle Button */}
@@ -301,54 +403,9 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
             </div>
             <div id="executive-summary" className="p-3">
                 <h1 className={styles.heading}>Executive Summary</h1>
-                <div className={styles.flowRateContainer}>
-                    Planned Flow Rate: {plannedFlowRate}
-                </div>
-                <div className={styles.flowRateContainer}>
-                    <span className={styles.flowRateLabel}>Flow Rate: </span>
-                    <span className={styles.flowRateValue}>{flowRate || "--"}</span>
-                </div>
-
-                {/* Local Sort Plan */}
-                <LocalSortPlan
-                    activeId={activeId}
-                    flightData={flightData}
-                    scheduledTime={scheduledTime}
-                    onScheduledTimeChange={setScheduledTime}
-                    onFlightEdit={handleFlightEdit}
-                />
-
-                {/* Root Cause of Delay */}
-                <RootCauseOfDelay
-                    inputValue={inputValue}
-                    onInputValueChange={setInputValue}
-                    rootCausePounds={rootCausePounds}
-                    onRootCausePoundsChange={setRootCausePounds}
-                    plannedPieceCount={plannedPieceCount}
-                    plannedPounds={plannedPounds}
-                    actualPieces={actualPieces}
-                    onActualPiecesChange={setActualPieces}
-                />
-
-                {/* Outbound Truck Routes */}
-                <OutboundTruckRoutes
-                    destinationData={destinationData}
-                    onAddRoute={addNewRoute}
-                    onDeleteRoute={deleteRoute}
-                    onRouteChange={handleInputChange}
-                />
-
-                {/* Unscheduled Routes */}
-                {isChecked && <div className={styles.section}><Unscheduled/></div>}
-
-                {/* Other Summary Comments */}
-                <OtherSummaryComments
-                    editableTotalWeight={editableTotalWeight}
-                    editableHeavyWeight={editableHeavyWeight}
-                    editableExpressWeight={editableExpressWeight}
-                    onTotalWeightChange={setEditableTotalWeight}
-                    onHeavyWeightChange={setEditableHeavyWeight}
-                />
+                {activeId === 1460 && flight1460Layout}
+                {activeId === 1451 && flight1451Layout}
+                {activeId === 2260 && flight2260Layout}
             </div>
         </div>
     );

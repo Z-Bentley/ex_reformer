@@ -1,0 +1,34 @@
+{    
+    "sortPlan": [
+        { 
+            "id": 0, 
+            "name": "Aircraft Arrival", 
+            "schedule": "05:59", 
+            "actual": "6:29", 
+            "variance": "+30" 
+        },
+        { 
+            "id": 1, 
+            "name": "Sort Down Time", 
+            "schedule": "06:19", 
+            "actual": "6:43", 
+            "variance": "+24" 
+        },
+        { 
+            "id": 2,
+            "name": "Sort End", 
+            "schedule": "06:39", 
+            "actual": "7:10", 
+            "variance": "+31" 
+        }
+    ],
+    "truckRoutes":[
+        {
+            "id": 1,
+            "destination": "Home",
+            "schedule": "06:30",
+            "actual": "07:14",
+            "variance": "+44"
+        }
+    ]
+}
