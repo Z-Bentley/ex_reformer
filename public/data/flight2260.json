@@ -2,33 +2,139 @@
     "sortPlan": [
         { 
             "id": 0, 
-            "name": "Aircraft Arrival", 
-            "schedule": "05:59", 
-            "actual": "06:29", 
-            "variance": "+30" 
+            "name": "Sort Down Time", 
+            "schedule": "02:45", 
+            "actual": "02:49", 
+            "variance": "+4" 
         },
         { 
             "id": 1, 
-            "name": "Sort Down Time", 
-            "schedule": "02:44", 
-            "actual": "02:43", 
-            "variance": "-1" 
-        },
-        { 
-            "id": 2,
-            "name": "Sort End", 
-            "schedule": "06:39", 
-            "actual": "7:10", 
-            "variance": "+31" 
+            "name": "Block", 
+            "schedule": "03:09", 
+            "actual": "03:13", 
+            "variance": "+4" 
         }
     ],
     "truckRoutes":[
         {
             "id": 1,
-            "destination": "Home",
-            "schedule": "06:30",
-            "actual": "07:14",
-            "variance": "+44"
+            "route": "CVG87",
+            "origin": "CVGRT",
+            "schedule": "00:11",
+            "actual": "00:15",
+            "variance": "+4"
+        },
+        {
+            "id": 2,
+            "route": "CVG81",
+            "origin": "CVGRT",
+            "schedule": "00:55",
+            "actual": "00:59",
+            "variance": "+4"
+        },
+        {
+            "id": 3,
+            "route": "CVG82",
+            "origin": "CVGRT",
+            "schedule": "01:10",
+            "actual": "01:14",
+            "variance": "+4"
+        },
+        {
+            "id": 4,
+            "route": "HAO24",
+            "origin": "HAOA",
+            "schedule": "01:28",
+            "actual": "01:32",
+            "variance": "+4"
+        },
+        {
+            "id": 5,
+            "route": "CVG25",
+            "origin": "CVGRT",
+            "schedule": "01:30",
+            "actual": "01:34",
+            "variance": "+4"
+        },
+        {
+            "id": 6,
+            "route": "AXV24",
+            "origin": "AXVA",
+            "schedule": "01:31",
+            "actual": "01:35",
+            "variance": "+4"
+        },
+        {
+            "id": 7,
+            "route": "OXD24",
+            "origin": "OXDA",
+            "schedule": "01:32",
+            "actual": "01:36",
+            "variance": "+4"
+        },
+        {
+            "id": 8,
+            "route": "LUK68",
+            "origin": "CVGZ1",
+            "schedule": "01:39",
+            "actual": "01:43",
+            "variance": "+4"
+        },
+        {
+            "id": 9,
+            "route": "CVG24",
+            "origin": "CVGA",
+            "schedule": "01:40",
+            "actual": "01:44",
+            "variance": "+4"
+        },
+        {
+            "id": 10,
+            "route": "CVG28",
+            "origin": "CVGRT",
+            "schedule": "01:50",
+            "actual": "01:54",
+            "variance": "+4"
+        },
+        {
+            "id": 11,
+            "route": "CVG84",
+            "origin": "CVGRT",
+            "schedule": "01:55",
+            "actual": "01:59",
+            "variance": "+4"
+        },
+        {
+            "id": 12,
+            "route": "FFT24",
+            "origin": "FFTA",
+            "schedule": "01:56",
+            "actual": "02:00",
+            "variance": "+4"
+        },
+        {
+            "id": 13,
+            "route": "CVG27",
+            "origin": "CVGRT",
+            "schedule": "02:10",
+            "actual": "02:14",
+            "variance": "+4"
+        },
+        {
+            "id": 14,
+            "route": "CVG99",
+            "origin": "CVGK1",
+            "schedule": "02:38",
+            "actual": "02:42",
+            "variance": "+4"
+        },
+        {
+            "id": 15,
+            "route": "CVG30",
+            "origin": "CVGK1",
+            "schedule": "02:45",
+            "actual": "02:49",
+            "variance": "+4"
         }
     ]
 }

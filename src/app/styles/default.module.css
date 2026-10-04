@@ -941,3 +941,88 @@
     transform: none;
   }
 }
+
+/* =========================================================
+   YES / NO SELECT
+   ========================================================= */
+
+.choiceContainer {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    /* margin: 20px; */
+}
+
+.choiceSelect {
+    min-width: 180px;
+    padding: 8px 12px;
+
+    border: 1px solid rgba(26, 255, 106, 0.45);
+    border-radius: 10px;
+
+    background: linear-gradient(
+        180deg,
+        rgba(26, 255, 106, 0.14),
+        rgba(0, 0, 0, 0.4)
+    );
+
+    color: var(--text-main);
+
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    box-shadow: var(--shadow-soft);
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.15s ease;
+}
+
+.choiceSelect:hover {
+    border-color: rgba(26, 255, 106, 0.75);
+
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.35),
+        0 0 10px rgba(26, 255, 106, 0.12);
+
+    transform: translateY(-1px);
+}
+
+.choiceSelect:focus {
+    outline: none;
+
+    border-color: var(--green);
+
+    box-shadow:
+        0 0 0 3px rgba(26, 255, 106, 0.18),
+        0 0 12px rgba(26, 255, 106, 0.15);
+}
+
+.choiceSelect option {
+    background: var(--bg-blue-dark);
+    color: var(--text-main);
+}
+
+.choiceResult {
+    margin: 0;
+    padding: 8px 12px;
+
+    border-left: 3px solid var(--green);
+
+    background: rgba(26, 255, 106, 0.08);
+
+    color: var(--text-muted);
+
+    font-size: 0.9rem;
+}
+
+.choiceResult strong {
+    color: var(--green);
+    font-weight: 800;
+
+    text-shadow:
+        0 0 6px rgba(26, 255, 106, 0.35);
+}

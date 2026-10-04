@@ -9,6 +9,11 @@ import LocalSortPlan from "./LocalSortPlan";
 import RootCauseOfDelay from "./RootCauseOfDelay";
 import OutboundTruckRoutes from "./OutboundTruckRoutes";
 import OtherSummaryComments from "./OtherSummaryComments";
+import InboundTruckRoutes from "./InboundTruckRoutes";
+import LocalSortBlock from "./LocalSortBlock";
+import FlightSummary from "./FlightSummary";
+import StatScanTable from "./StatScanTable";
+import Comments from "./Comments";
 
 import flight1460 from "../../../public/data/flight1460.json";
 import flight1451 from "../../../public/data/flight1451.json";
@@ -31,7 +36,7 @@ const datasets = {
 };
 
 export default function Reformer({ data, totalWeight, heavyWeight, expressWeight, actualPounds }) {
-    const [activeId, setActiveId] = useState(1460);
+    const [activeId, setActiveId] = useState(2260);
 
     const currentDataset = datasets[activeId];
     const initialSortPlan = currentDataset.flight.sortPlan || currentDataset.flight;
@@ -298,12 +303,39 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
         />
     )
 
+    const flightSummary = (
+        <FlightSummary
+            inputValue={inputValue}
+            onInputValueChange={setInputValue}
+            onRouteChange={handleInputChange}
+        />
+    )
+
     const outboundTruckRoutes = (
         <OutboundTruckRoutes
             destinationData={destinationData}
             onAddRoute={addNewRoute}
             onDeleteRoute={deleteRoute}
             onRouteChange={handleInputChange}
+        />
+    )
+
+    const inboundTruckRoutes = (
+        <InboundTruckRoutes
+            destinationData={destinationData}
+            onAddRoute={addNewRoute}
+            onDeleteRoute={deleteRoute}
+            onRouteChange={handleInputChange}
+        />
+    )
+
+    const localSortBlock = (
+        <LocalSortBlock
+            activeId={activeId}
+            flightData={flightData}
+            scheduledTime={scheduledTime}
+            onScheduledTimeChange={setScheduledTime}
+            onFlightEdit={handleFlightEdit}
         />
     )
 
@@ -327,6 +359,16 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
                 <span className={styles.flowRateValue}>{flowRate || "--"}</span>
             </div>
         </>
+    )
+
+    const comments = (
+        <Comments/>
+    )
+
+    const statScanTable = (
+        <StatScanTable
+            onInputChange={handleInputChange}
+        />
     )
 
     const unscheduledRoutes = isChecked ? (
@@ -358,12 +400,11 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
 
     const flight2260Layout = (
         <>
-            {flowRateSection}
-            {localSortPlan}
-            {rootCauseOfDelay}
-            {outboundTruckRoutes}
-            {unscheduledRoutes}
-            {summaryComments}
+            {localSortBlock}
+            {flightSummary}
+            {inboundTruckRoutes}
+            {statScanTable}
+            {comments}
         </>
     )
 

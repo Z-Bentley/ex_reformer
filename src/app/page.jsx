@@ -42,10 +42,23 @@ export default function EditableTimeTable() {
       input.replaceWith(span);
     });
 
-    // Replace all textarea fields with their values
+    // Replace all textarea fields with their values, preserving newlines
     clonedSummary.querySelectorAll("textarea").forEach((textarea) => {
       const span = document.createElement("span");
-      span.textContent = textarea.value || "--";
+      
+      if (textarea.value) {
+        // Split text by newlines and insert <br /> tags between lines
+        const lines = textarea.value.split("\n");
+        lines.forEach((line, index) => {
+          span.appendChild(document.createTextNode(line));
+          if (index < lines.length - 1) {
+            span.appendChild(document.createElement("br"));
+          }
+        });
+      } else {
+        span.textContent = "--";
+      }
+
       textarea.replaceWith(span);
     });
 
