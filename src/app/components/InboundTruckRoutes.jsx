@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import styles from "../styles/default.module.css";
 import * as excel from "../excel";
+import { useState } from "react";
 
 export default function InboundTruckRoutes({
     destinationData,
@@ -9,97 +10,128 @@ export default function InboundTruckRoutes({
     onDeleteRoute,
     onRouteChange,
 }) {
+    const [isChecked, setIsChecked] = useState(false);
+
+    const handleCheckboxChange = () => {
+        setIsChecked(!isChecked)
+    }
+
     return (
-        <div className={styles.section}>
-            <div className="flex justify-between p-1">
-                <h2 className={styles.subHeading}>Inbound Truck Routes</h2>
-
-                <Button id="doNotCopy" onClick={onAddRoute}>
-                    Add New Route
-                </Button>
+        <div>
+            {/* Toggle */}
+            <div className="px-3 justify-end" id="doNotCopy">
+                <label className={styles.toggleLabel}>
+                    <div className={styles.toggleWrapper}>
+                        <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={handleCheckboxChange}
+                            className={styles.toggleInput}
+                        />
+                        <div
+                            className={`${styles.toggleTrack} ${
+                                isChecked ? styles.toggleTrackActive : ""
+                            }`}
+                        />
+                        <div
+                            className={`${styles.toggleThumb} ${
+                                isChecked ? styles.toggleThumbActive : ""
+                            }`}
+                        />
+                    </div>
+                </label>
             </div>
+            {isChecked && <div className={styles.section}>
+                <div className="flex justify-between p-1">
+                    <h2 className={styles.subHeading}>Inbound Truck Routes</h2>
 
-            <table className={styles.table}>
-                <thead>
-                    <tr>
-                        <th className={styles.th}>Route</th>
-                        <th className={styles.th}>Origin</th>
-                        <th className={styles.th}>Schedule</th>
-                        <th className={styles.th}>Actual</th>
-                        <th className={styles.th}>Variance</th>
-                        <th id="doNotCopy" className={styles.th}>
-                            Delete
-                        </th>
-                    </tr>
-                </thead>
+                    <Button id="doNotCopy" onClick={onAddRoute}>
+                        Add New Route
+                    </Button>
+                </div>
 
-                <tbody>
-                    {destinationData.map((row) => (
-                        <tr key={row.id}>
-                            <td className={styles.td}>
-                                <div className="font-bold">
-                                    <input
-                                        type="text"
-                                        className={styles.input}
-                                        value={row.route || ""}
-                                        onChange={(event) =>
-                                            onRouteChange(row.id, "route", event.target.value)
-                                        }
-                                    />
-                                </div>
-                            </td>
-
-                            <td className={styles.td}>
-                                <div className="font-bold">
-                                    <input
-                                        type="text"
-                                        className={styles.input}
-                                        value={row.origin || ""}
-                                        onChange={(event) =>
-                                            onRouteChange(row.id, "origin", event.target.value)
-                                        }
-                                    />
-                                </div>
-                            </td>
-
-                            <td className={styles.td}>
-                                <input
-                                    type="text"
-                                    className={styles.input}
-                                    value={row.schedule || ""}
-                                    onChange={(event) =>
-                                        onRouteChange(row.id, "schedule", excel.formatTimeInput(event.target.value))
-                                    }
-                                />
-                            </td>
-
-                            <td className={styles.td}>
-                                <input
-                                    type="text"
-                                    className={styles.input}
-                                    value={row.actual || ""}
-                                    onChange={(event) =>
-                                        onRouteChange(row.id, "actual", excel.formatTimeInput(event.target.value))
-                                    }
-                                />
-                            </td>
-
-                            <td className={`${styles.td} ${styles.textCenter}`}>
-                                {row.variance}
-                            </td>
-
-                            <td className="flex justify-center" id="doNotCopy">
-                                <Button
-                                    variant="destructive"
-                                    onClick={() => onDeleteRoute(row.id)}
-                                >
-                                    X
-                                </Button>
-                            </td>
+                <table className={styles.table}>
+                    <thead>
+                        <tr>
+                            <th className={styles.th}>Route</th>
+                            <th className={styles.th}>Origin</th>
+                            <th className={styles.th}>Schedule</th>
+                            <th className={styles.th}>Actual</th>
+                            <th className={styles.th}>Variance</th>
+                            <th id="doNotCopy" className={styles.th}>
+                                Delete
+                            </th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+                        {destinationData.map((row) => (
+                            <tr key={row.id}>
+                                <td className={styles.td}>
+                                    <div className="font-bold">
+                                        <input
+                                            type="text"
+                                            className={styles.input}
+                                            value={row.route || ""}
+                                            onChange={(event) =>
+                                                onRouteChange(row.id, "route", event.target.value)
+                                            }
+                                        />
+                                    </div>
+                                </td>
+
+                                <td className={styles.td}>
+                                    <div className="font-bold">
+                                        <input
+                                            type="text"
+                                            className={styles.input}
+                                            value={row.origin || ""}
+                                            onChange={(event) =>
+                                                onRouteChange(row.id, "origin", event.target.value)
+                                            }
+                                        />
+                                    </div>
+                                </td>
+
+                                <td className={styles.td}>
+                                    <input
+                                        type="text"
+                                        className={styles.input}
+                                        value={row.schedule || ""}
+                                        onChange={(event) =>
+                                            onRouteChange(row.id, "schedule", excel.formatTimeInput(event.target.value))
+                                        }
+                                    />
+                                </td>
+
+                                <td className={styles.td}>
+                                    <input
+                                        type="text"
+                                        className={styles.input}
+                                        value={row.actual || ""}
+                                        onChange={(event) =>
+                                            onRouteChange(row.id, "actual", excel.formatTimeInput(event.target.value))
+                                        }
+                                    />
+                                </td>
+
+                                <td className={`${styles.td} ${styles.textCenter}`}>
+                                    {row.variance}
+                                </td>
+
+                                <td className="flex justify-center" id="doNotCopy">
+                                    <Button
+                                        variant="destructive"
+                                        onClick={() => onDeleteRoute(row.id)}
+                                    >
+                                        X
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>}
         </div>
     );
 }
