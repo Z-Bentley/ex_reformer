@@ -1,7 +1,7 @@
 {
     "plannedPieceCount": 1902,
     "plannedFlowRate": 2500,
-    "plannedPounds": 6700,
+    "plannedPounds": 114400,
     "sortPlan": [
         { 
             "id": 0, 
@@ -28,45 +28,45 @@
     "truckRoutes": [
         {
             "id": 1,
-            "destination": "CVG52 RT",
+            "destination": "CVG52",
             "schedule": "07:00",
             "actual": "07:15",
             "variance": "+15"
         },
         {
             "id": 2,
-            "destination": "CVG59 SDR",
+            "destination": "CVG53",
             "schedule": "07:20",
             "actual": "07:22",
             "variance": "+2"
         },
         {
             "id": 3,
-            "destination": "OXD59 SDR",
-            "schedule": "07:20",
+            "destination": "CVG59",
+            "schedule": "07:25",
             "actual": "07:00",
-            "variance": "-20"
+            "variance": "-25"
         },
         {
             "id": 4,
-            "destination": "LUK59 SDR",
-            "schedule": "07:20",
+            "destination": "LUK59",
+            "schedule": "07:25",
             "actual": "07:25",
-            "variance": "+5"
+            "variance": "+0"
         },
         {
             "id": 5,
-            "destination": "CVG53 RT",
-            "schedule": "07:20",
+            "destination": "FFT59",
+            "schedule": "07:25",
             "actual": "07:05",
-            "variance": "-15"
+            "variance": "-20"
         },
         {
             "id": 6,
-            "destination": "LUK51 RT",
-            "schedule": "07:20",
+            "destination": "AXV59",
+            "schedule": "07:25",
             "actual": "07:25",
-            "variance": "+5"
+            "variance": "+0"
         },
         {
             "id": 7,
@@ -77,17 +77,17 @@
         },
         {
             "id": 8,
-            "destination": "FFT41 (PDJA)",
-            "schedule": "07:20",
+            "destination": "HAO59",
+            "schedule": "07:25",
             "actual": "07:20",
-            "variance": "+0"
+            "variance": "-5"
         },
         {
             "id": 9,
-            "destination": "CVG70 (NCING)",
-            "schedule": "11:45",
-            "actual": "09:45",
-            "variance": "-120"
+            "destination": "OXD59",
+            "schedule": "07:25",
+            "actual": "07:45",
+            "variance": "+20"
         }
     ]
 }
