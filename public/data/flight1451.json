@@ -27,6 +27,13 @@
     ],
     "truckRoutes": [
         {
+            "id": 0,
+            "destination": "Docs LUK/CVG/OXD/FFT78",
+            "schedule": "06:40",
+            "actual": "07:05",
+            "variance": "+25"
+        },
+        {
             "id": 1,
             "destination": "CVG52",
             "schedule": "07:00",
@@ -49,31 +56,31 @@
         },
         {
             "id": 4,
-            "destination": "LUK59",
+            "destination": "LUK51",
             "schedule": "07:25",
             "actual": "07:25",
             "variance": "+0"
         },
         {
             "id": 5,
+            "destination": "LUK59",
+            "schedule": "07:25",
+            "actual": "07:25",
+            "variance": "+0"
+        },
+        {
+            "id": 6,
             "destination": "FFT59",
             "schedule": "07:25",
             "actual": "07:05",
             "variance": "-20"
         },
         {
-            "id": 6,
+            "id": 7,
             "destination": "AXV59",
             "schedule": "07:25",
             "actual": "07:25",
             "variance": "+0"
-        },
-        {
-            "id": 7,
-            "destination": "Docs LUK/CVG/OXD/FFT78",
-            "schedule": "06:40",
-            "actual": "07:05",
-            "variance": "+25"
         },
         {
             "id": 8,
