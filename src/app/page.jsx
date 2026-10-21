@@ -133,6 +133,13 @@ export default function EditableTimeTable() {
           </div>
           <div className={styles.secretArea} onClick={() => setShowButton(true)}>
             {showButton && (
+                <Link href="/cons" className={styles.tableLink}>
+                  Cons by Opar
+                </Link>
+            )}
+          </div>
+          <div className={styles.secretArea} onClick={() => setShowButton(true)}>
+            {showButton && (
                 <button onClick={downloadExampleFile} className={styles.downloadButton}>
                   📥
                 </button>
