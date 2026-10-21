@@ -146,6 +146,124 @@ function processTable(jsonData) {
     return results;
 }
 
+// 1. File selector trigger
+export function positionSelector(callback) {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".xlsx,.xls";
+
+    input.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            readPosition(file, callback);
+        }
+    });
+
+    input.click();
+}
+
+// 2. File reader function
+async function readPosition(file, callback) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: "array" });
+
+            const sheet = workbook.Sheets[workbook.SheetNames[0]];
+            const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+            // Pass jsonData to the dynamic header processor
+            const processedData = processPosition(jsonData);
+
+            callback(
+                file,
+                processedData
+            );
+        } catch (err) {
+            console.error("Error processing Excel file:", err);
+            callback(file, []);
+        }
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+// 3. Dynamic header processor
+function processPosition(jsonData) {
+    if (!jsonData || jsonData.length === 0) {
+        console.warn("No data found in sheet!");
+        return [];
+    }
+
+    let headerRowIndex = -1;
+    let headerMap = {};
+
+    // Helper to normalize strings for comparison (lowercase, trimmed)
+    const normalize = (str) => String(str || "").toLowerCase().trim().replace(/\s+/g, " ");
+
+    // Target headers to search for
+    const targetHeaders = ["tracking no", "recip co", "recip addr", "service"];
+
+    // 1. Scan the first 15 rows to locate where the header row is
+    for (let i = 0; i < Math.min(jsonData.length, 15); i++) {
+        const row = jsonData[i];
+        if (!Array.isArray(row)) continue;
+
+        const rowNormalized = row.map(cell => normalize(cell));
+        // Check if this row contains any of our target header names
+        const matches = targetHeaders.filter(h => rowNormalized.includes(h));
+
+        if (matches.length >= 2) { // Found row with at least 2 matching headers
+            headerRowIndex = i;
+            row.forEach((cell, colIdx) => {
+                if (cell !== undefined && cell !== null) {
+                    headerMap[normalize(cell)] = colIdx;
+                }
+            });
+            break;
+        }
+    }
+
+    if (headerRowIndex === -1) {
+        console.warn("Could not find header row matching target column names!");
+        return [];
+    }
+
+    // Helper to safely fetch column value by header name
+    const getValue = (row, headerName) => {
+        const colIdx = headerMap[normalize(headerName)];
+        return (colIdx !== undefined && row[colIdx] !== undefined) ? row[colIdx] : "";
+    };
+
+    const results = [];
+
+    // 2. Loop through data rows starting immediately after headerRowIndex
+    for (let i = headerRowIndex + 1; i < jsonData.length; i++) {
+        const row = jsonData[i];
+        if (!row || row.length === 0) continue;
+
+        const trackingNo = getValue(row, "Tracking No");
+        const recipCo = getValue(row, "Recip Co");
+
+        // Include row if it has content in trackingNo OR recipCo
+        if (trackingNo || recipCo) {
+            results.push({
+                Tracking_No: trackingNo,
+                Recip_Co: recipCo,
+                Recip_Addr: getValue(row, "Recip Addr"),
+                Recip_City: getValue(row, "Recip City"),
+                Recip_Postal: getValue(row, "Recip Postal"),
+                Service: getValue(row, "Service"),
+                Commit_Date: getValue(row, "Commit Date"),
+                Commit_Time: getValue(row, "Commit Time"),
+                Special_Handling_Codes: getValue(row, "Special Handling Codes")
+            });
+        }
+    }
+
+    return results;
+}
+
 // Calculate total or filtered weight from the processed data
 function calcWeight(sheet, destFilter = null) {
     let totalWeight = 0;

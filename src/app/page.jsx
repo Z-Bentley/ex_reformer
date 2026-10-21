@@ -120,6 +120,10 @@ export default function EditableTimeTable() {
             Copy Executive Summary
           </button>
 
+          <Link href="/cons" className={styles.tableLink}>
+            Cons by Opar
+          </Link>
+
           {fileName && <p className={styles.selectedFile}>Selected File: {fileName}</p>}
         </div>
         {/* Secret Invisible Click Area */}
@@ -128,13 +132,6 @@ export default function EditableTimeTable() {
             {showButton && (
                 <Link href="/table" className={styles.tableLink}>
                   Table
-                </Link>
-            )}
-          </div>
-          <div className={styles.secretArea} onClick={() => setShowButton(true)}>
-            {showButton && (
-                <Link href="/cons" className={styles.tableLink}>
-                  Cons by Opar
                 </Link>
             )}
           </div>

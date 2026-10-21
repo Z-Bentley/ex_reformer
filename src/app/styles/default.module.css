@@ -210,6 +210,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  margin: 5px;
 
   padding: 12px 22px;
   border-radius: 12px;
@@ -1025,4 +1026,79 @@
 
     text-shadow:
         0 0 6px rgba(26, 255, 106, 0.35);
+}
+
+/* ===================================================
+   PRINT STYLES: Landscape, pure black text, zero shading
+   =================================================== */
+@media print {
+  /* Force automatic landscape page orientation */
+  @page {
+    size: landscape;
+    margin: 1cm;
+  }
+
+  /* 1. Hide everything on the page by default */
+  body * {
+    visibility: hidden;
+  }
+
+  /* 2. Make ONLY the table section and its contents visible */
+  .section, 
+  .section *, 
+  .tableWrapper, 
+  .tableWrapper *, 
+  .table, 
+  .table * {
+    visibility: visible;
+  }
+
+  /* 3. Position the section at the top-left */
+  .section {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* 4. Force subHeadings / section titles to be pure black without effects or shading */
+  .subHeading,
+  .section h2 {
+    color: #000 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    font-weight: bold !important;
+  }
+
+  /* 5. Table styling: pure black text, solid borders, zero backgrounds/shading */
+  .table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .th, .td {
+    border: 1px solid #000 !important;
+    color: #000 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    padding: 6px 8px !important;
+  }
+
+  .th {
+    font-weight: bold !important;
+  }
+
+  /* 6. Strip away row selection highlights or background fills */
+  .selectedRow {
+    background-color: transparent !important;
+  }
 }
