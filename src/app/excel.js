@@ -189,6 +189,104 @@ async function readPosition(file, callback) {
 }
 
 // 3. Dynamic header processor
+// function processPosition(jsonData) {
+//     if (!jsonData || jsonData.length === 0) {
+//         console.warn("No data found in sheet!");
+//         return [];
+//     }
+
+//     let headerRowIndex = -1;
+//     let headerMap = {};
+
+//     // Helper to normalize strings for comparison (lowercase, trimmed)
+//     const normalize = (str) => String(str || "").toLowerCase().trim().replace(/\s+/g, " ");
+
+//     // Target headers to search for
+//     const targetHeaders = ["tracking no", "recip co", "recip addr", "service"];
+
+//     // 1. Scan the first 15 rows to locate where the header row is
+//     for (let i = 0; i < Math.min(jsonData.length, 15); i++) {
+//         const row = jsonData[i];
+//         if (!Array.isArray(row)) continue;
+
+//         const rowNormalized = row.map(cell => normalize(cell));
+//         // Check if this row contains any of our target header names
+//         const matches = targetHeaders.filter(h => rowNormalized.includes(h));
+
+//         if (matches.length >= 2) { // Found row with at least 2 matching headers
+//             headerRowIndex = i;
+//             row.forEach((cell, colIdx) => {
+//                 if (cell !== undefined && cell !== null) {
+//                     headerMap[normalize(cell)] = colIdx;
+//                 }
+//             });
+//             break;
+//         }
+//     }
+
+//     if (headerRowIndex === -1) {
+//         console.warn("Could not find header row matching target column names!");
+//         return [];
+//     }
+
+//     // Helper to safely fetch column value by header name
+//     const getValue = (row, headerName) => {
+//         const colIdx = headerMap[normalize(headerName)];
+//         return (colIdx !== undefined && row[colIdx] !== undefined) ? row[colIdx] : "";
+//     };
+
+//     const results = [];
+
+//     // 2. Loop through data rows starting immediately after headerRowIndex
+//     for (let i = headerRowIndex + 1; i < jsonData.length; i++) {
+//         const row = jsonData[i];
+//         if (!row || row.length === 0) continue;
+
+//         const trackingNo = getValue(row, "Tracking No");
+//         const recipCo = getValue(row, "Recip Co");
+
+//         // Include row if it has content in trackingNo OR recipCo
+//         if (trackingNo || recipCo) {
+//             results.push({
+//                 Tracking_No: trackingNo,
+//                 Recip_Co: recipCo,
+//                 Recip_Addr: getValue(row, "Recip Addr"),
+//                 Recip_City: getValue(row, "Recip City"),
+//                 Recip_Postal: getValue(row, "Recip Postal"),
+//                 Service: getValue(row, "Service"),
+//                 Commit_Date: getValue(row, "Commit Date"),
+//                 Commit_Time: getValue(row, "Commit Time"),
+//                 Special_Handling_Codes: getValue(row, "Special Handling Codes")
+//             });
+//         }
+//     }
+
+//     return results;
+// }
+
+// Helper function to convert Excel decimal time into a readable string (e.g., 12:00 PM)
+function formatExcelTime(value) {
+    if (value === undefined || value === null || value === "") return "";
+    
+    // If it's already a text string, return it as-is
+    if (typeof value === "string") return value;
+
+    // Excel time is a decimal fraction of a day (e.g., 0.5 = 12:00 PM)
+    // Use modulo 1 (%) in case it's a full date+time serial number (e.g., 45123.5)
+    const timeFraction = value % 1; 
+    const totalSeconds = Math.round(timeFraction * 86400);
+    
+    const hours = Math.floor(totalSeconds / 3600) % 24;
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    
+    const period = hours >= 12 ? "PM" : "AM";
+    const hour12 = hours % 12 === 0 ? 12 : hours % 12;
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    
+    return `${hour12}:${formattedMinutes} ${period}`;
+}
+
+// 3. Dynamic header processor
 function processPosition(jsonData) {
     if (!jsonData || jsonData.length === 0) {
         console.warn("No data found in sheet!");
@@ -198,22 +296,18 @@ function processPosition(jsonData) {
     let headerRowIndex = -1;
     let headerMap = {};
 
-    // Helper to normalize strings for comparison (lowercase, trimmed)
     const normalize = (str) => String(str || "").toLowerCase().trim().replace(/\s+/g, " ");
-
-    // Target headers to search for
     const targetHeaders = ["tracking no", "recip co", "recip addr", "service"];
 
-    // 1. Scan the first 15 rows to locate where the header row is
+    // Scan the first 15 rows to locate the header row
     for (let i = 0; i < Math.min(jsonData.length, 15); i++) {
         const row = jsonData[i];
         if (!Array.isArray(row)) continue;
 
         const rowNormalized = row.map(cell => normalize(cell));
-        // Check if this row contains any of our target header names
         const matches = targetHeaders.filter(h => rowNormalized.includes(h));
 
-        if (matches.length >= 2) { // Found row with at least 2 matching headers
+        if (matches.length >= 2) {
             headerRowIndex = i;
             row.forEach((cell, colIdx) => {
                 if (cell !== undefined && cell !== null) {
@@ -229,7 +323,6 @@ function processPosition(jsonData) {
         return [];
     }
 
-    // Helper to safely fetch column value by header name
     const getValue = (row, headerName) => {
         const colIdx = headerMap[normalize(headerName)];
         return (colIdx !== undefined && row[colIdx] !== undefined) ? row[colIdx] : "";
@@ -237,7 +330,7 @@ function processPosition(jsonData) {
 
     const results = [];
 
-    // 2. Loop through data rows starting immediately after headerRowIndex
+    // Loop through data rows starting immediately after headerRowIndex
     for (let i = headerRowIndex + 1; i < jsonData.length; i++) {
         const row = jsonData[i];
         if (!row || row.length === 0) continue;
@@ -245,7 +338,6 @@ function processPosition(jsonData) {
         const trackingNo = getValue(row, "Tracking No");
         const recipCo = getValue(row, "Recip Co");
 
-        // Include row if it has content in trackingNo OR recipCo
         if (trackingNo || recipCo) {
             results.push({
                 Tracking_No: trackingNo,
@@ -255,7 +347,7 @@ function processPosition(jsonData) {
                 Recip_Postal: getValue(row, "Recip Postal"),
                 Service: getValue(row, "Service"),
                 Commit_Date: getValue(row, "Commit Date"),
-                Commit_Time: getValue(row, "Commit Time"),
+                Commit_Time: formatExcelTime(getValue(row, "Commit Time")), // <--- Converted here!
                 Special_Handling_Codes: getValue(row, "Special Handling Codes")
             });
         }

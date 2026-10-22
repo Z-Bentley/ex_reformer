@@ -90,10 +90,10 @@ const handlePrint = () => {
                 </div>
             </div>
             {fileName && (
-    <button className={styles.button} onClick={handlePrint}>
-        🖨️ Print Table
-    </button>
-)}
+                <button className={styles.button} onClick={handlePrint}>
+                    🖨️ Print Table
+                </button>
+            )}
 
             {/* Content Area */}
             <div className="p-4">                

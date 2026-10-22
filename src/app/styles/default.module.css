@@ -1029,7 +1029,7 @@
 }
 
 /* ===================================================
-   PRINT STYLES: Landscape, pure black text, zero shading
+   PRINT STYLES: Landscape, pure black text, smaller font
    =================================================== */
 @media print {
   /* Force automatic landscape page orientation */
@@ -1065,7 +1065,7 @@
     box-shadow: none !important;
   }
 
-  /* 4. Force subHeadings / section titles to be pure black without effects or shading */
+  /* 4. Force subHeadings / section titles to be pure black */
   .subHeading,
   .section h2 {
     color: #000 !important;
@@ -1074,9 +1074,10 @@
     box-shadow: none !important;
     text-shadow: none !important;
     font-weight: bold !important;
+    font-size: 14pt !important; /* Slightly smaller header size for print */
   }
 
-  /* 5. Table styling: pure black text, solid borders, zero backgrounds/shading */
+  /* 5. Table styling: pure black text, solid borders, SMALLER FONT */
   .table {
     width: 100% !important;
     border-collapse: collapse !important;
@@ -1084,20 +1085,21 @@
     box-shadow: none !important;
   }
 
-  .th, .td {
+.th, .td {
     border: 1px solid #000 !important;
     color: #000 !important;
     background: transparent !important;
     background-color: transparent !important;
     box-shadow: none !important;
-    padding: 6px 8px !important;
+    padding: 4px 6px !important; /* Tighter padding for smaller text */
+    font-size: 9pt !important;   /* <--- Adjusted from 10pt to 9pt */
   }
 
   .th {
     font-weight: bold !important;
   }
 
-  /* 6. Strip away row selection highlights or background fills */
+  /* 6. Strip away row selection highlights */
   .selectedRow {
     background-color: transparent !important;
   }
