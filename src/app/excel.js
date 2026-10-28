@@ -475,7 +475,7 @@ export function setSortTimes(time) {
     }
 
     const aircraftArrivalMinutes = timeToMinutes(time);
-    const sortStartMinutes = aircraftArrivalMinutes + 20;
+    const sortStartMinutes = aircraftArrivalMinutes + 24;
     const sortEndMinutes = sortStartMinutes + 20;
 
     return [
