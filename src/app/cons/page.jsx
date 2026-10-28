@@ -9,6 +9,7 @@ export default function Cons() {
     const [data, setData] = useState([]);
     const [showButton, setShowButton] = useState(false);
     const [selectedRows, setSelectedRows] = useState([]);
+    const [tableHeading, setTableHeading] = useState("");
 
     // Callback when file is selected and parsed
     const handleFileSelect = (file, processedData) => {
@@ -18,6 +19,7 @@ export default function Cons() {
         setFileName(nameWithoutExtension);
         setData(processedData);
         setSelectedRows([]); // Reset selected rows for a new file
+        setTableHeading(nameWithoutExtension)
     };
 
     // Toggle row selection on click
@@ -43,9 +45,9 @@ export default function Cons() {
     };
 
     // Inside your Cons component:
-const handlePrint = () => {
-    window.print();
-};
+    const handlePrint = () => {
+        window.print();
+    };
 
     return (
         <div className={styles.main}>
@@ -105,7 +107,14 @@ const handlePrint = () => {
                 )}
                 {fileName && (
                     <div className={styles.section}>
-                        <h2 className={styles.subHeading}>{fileName}</h2>
+                        <h2 className={styles.subHeading}>
+                            <input
+                                type="text"
+                                className={styles.input}
+                                value={tableHeading}
+                                onChange={(e) => setTableHeading(e.target.value)}
+                            />
+                        </h2>
                         <div className={styles.tableWrapper}>
                             <table className={styles.table}>
                                 <thead>
