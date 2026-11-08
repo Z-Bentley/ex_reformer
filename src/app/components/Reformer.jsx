@@ -73,7 +73,7 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
         }
     }
 
-    // Load Truck Routes Data from JSON
+    // Load Plane Data
     useEffect(() => {
         const dataset = datasets[activeId];
         const sortPlan = dataset.flight.sortPlan || dataset.flight;
@@ -86,12 +86,16 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
         const newScheduledTime = sortPlan?.[0]?.schedule || "06:00";
         setScheduledTime(newScheduledTime);
 
-        const [startTime, endTime] = excel.setSortTimes(newScheduledTime);
+        // Extract all scheduledVariances from JSON into an array
+        const variances = sortPlan
+            .filter(item => item.scheduledVariance !== undefined)
+            .map(item => item.scheduledVariance);
+
+        const [startTime, endTime] = excel.setSortTimes(newScheduledTime, variances);
         setSortStartTime(startTime);
         setSortEndTime(endTime);
 
         // Sort and load the local truck array instantly
-        // const sortedTrucks = [...dataset.flight.truckRoutes].sort((a, b) => toMinutes(a.schedule) - toMinutes(b.schedule));
         setDestinationData(dataset.flight.truckRoutes || "");
 
     }, [activeId]);
@@ -99,8 +103,14 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
     // Function to update times when aircraft arrival time changes
     useEffect(() => {
         if (!scheduledTime) return;
+
+        // Extract the scheduledVariances from the current flightData state
+        const variances = flightData
+            .filter(item => item.scheduledVariance !== undefined)
+            .map(item => item.scheduledVariance);
     
-        const [startTime, endTime] = excel.setSortTimes(scheduledTime);
+        // Pass the variances along so it uses your JSON offsets instead of fallbacks
+        const [startTime, endTime] = excel.setSortTimes(scheduledTime, variances);
         
         setSortStartTime(startTime);
         setSortEndTime(endTime);
@@ -190,11 +200,27 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
     };
     
     const handleFlightEdit = (id, field, value) => {
-        setFlightData((prevData) =>
-            prevData.map((row) => {
+        setFlightData((prevData) => {
+            let newBlockSchedule = null;
+
+            if (id === 0 && field === "schedule" && excel.isValidTime(value)) {
+                const startMinutes = excel.timeToMinutes(value);
+                
+                // Look up id: 1's scheduledVariance dynamically from the current state/data, 
+                // falling back to 20 if it isn't found.
+                const blockRow = prevData.find(row => row.id === 1);
+                const offset = (blockRow && blockRow.scheduledVariance !== undefined) 
+                    ? blockRow.scheduledVariance 
+                    : 20; // Matches your JSON's scheduledVariance for id: 1
+
+                newBlockSchedule = excel.minutesToTime(startMinutes + offset);
+            }
+
+            // Map through and update the rows
+            return prevData.map((row) => {
                 if (row.id === id) {
                     const updatedRow = { ...row, [field]: value };
-    
+                    
                     if (field === "schedule" || field === "actual") {
                         updatedRow.variance = excel.calculateVariance(
                             field === "schedule" ? value : row.schedule, 
@@ -203,10 +229,20 @@ export default function Reformer({ data, totalWeight, heavyWeight, expressWeight
                     }
                     return updatedRow;
                 }
+
+                if (id === 0 && row.id === 1 && field === "schedule" && newBlockSchedule) {
+                    const updatedRow = { ...row, schedule: newBlockSchedule };
+                    updatedRow.variance = excel.calculateVariance(
+                        newBlockSchedule, 
+                        row.actual
+                    );
+                    return updatedRow;
+                }
+
                 return row;
-            })
-        );
-    };    
+            });
+        });
+    };
     
     // Root Cause Late Codes
     const handleInputText = (event) => {

@@ -11,6 +11,7 @@
             "id": 1, 
             "name": "Block", 
             "schedule": "03:09", 
+            "scheduledVariance": 24,
             "actual": "03:13", 
             "variance": "+4" 
         }

@@ -14,13 +14,15 @@
             "id": 1, 
             "name": "Sort Start", 
             "schedule": "06:20", 
+            "scheduledVariance": 20,
             "actual": "6:43", 
             "variance": "+23" 
         },
         { 
             "id": 2, 
             "name": "Sort End", 
-            "schedule": "06:40", 
+            "schedule": "06:40",
+            "scheduledVariance": 24, 
             "actual": "7:10", 
             "variance": "+30" 
         }
