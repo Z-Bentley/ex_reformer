@@ -22,7 +22,7 @@
             "id": 2,
             "name": "Sort End", 
             "schedule": "06:39", 
-            "scheduledVariance": 24,
+            "scheduledVariance": 20,
             "actual": "7:10", 
             "variance": "+31" 
         }
