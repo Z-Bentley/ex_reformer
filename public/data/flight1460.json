@@ -13,18 +13,18 @@
         { 
             "id": 1, 
             "name": "Sort Start", 
-            "schedule": "06:19", 
+            "schedule": "06:16", 
             "scheduledVariance": 20,
             "actual": "6:43", 
-            "variance": "+24" 
+            "variance": "+27" 
         },
         { 
             "id": 2,
             "name": "Sort End", 
-            "schedule": "06:39", 
+            "schedule": "06:36", 
             "scheduledVariance": 20,
             "actual": "7:10", 
-            "variance": "+31" 
+            "variance": "+34" 
         }
     ],
     "truckRoutes":[
