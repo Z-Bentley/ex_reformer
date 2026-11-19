@@ -30,42 +30,42 @@
     "truckRoutes": [
         {
             "id": 0,
-            "destination": "Docs LUK/CVG/OXD/FFT78",
+            "destination": "CVG78",
             "schedule": "06:40",
             "actual": "07:05",
             "variance": "+25"
         },
         {
             "id": 1,
+            "destination": "LUK78",
+            "schedule": "06:40",
+            "actual": "07:05",
+            "variance": "+25"
+        },
+        {
+            "id": 2,
             "destination": "CVG52",
             "schedule": "07:00",
             "actual": "07:15",
             "variance": "+15"
         },
         {
-            "id": 2,
+            "id": 3,
             "destination": "CVG53",
             "schedule": "07:20",
             "actual": "07:22",
             "variance": "+2"
         },
         {
-            "id": 3,
-            "destination": "CVG59",
+            "id": 4,
+            "destination": "LUK59",
             "schedule": "07:25",
             "actual": "07:00",
             "variance": "-25"
         },
         {
-            "id": 4,
-            "destination": "LUK51",
-            "schedule": "07:25",
-            "actual": "07:25",
-            "variance": "+0"
-        },
-        {
             "id": 5,
-            "destination": "LUK59",
+            "destination": "OXD59",
             "schedule": "07:25",
             "actual": "07:25",
             "variance": "+0"
@@ -74,25 +74,39 @@
             "id": 6,
             "destination": "FFT59",
             "schedule": "07:25",
-            "actual": "07:05",
-            "variance": "-20"
+            "actual": "07:25",
+            "variance": "+0"
         },
         {
             "id": 7,
             "destination": "AXV59",
             "schedule": "07:25",
+            "actual": "07:05",
+            "variance": "-20"
+        },
+        {
+            "id": 8,
+            "destination": "CVG59",
+            "schedule": "07:25",
             "actual": "07:25",
             "variance": "+0"
         },
         {
-            "id": 8,
+            "id": 9,
             "destination": "HAO59",
             "schedule": "07:25",
             "actual": "07:20",
             "variance": "-5"
         },
         {
-            "id": 9,
+            "id": 10,
+            "destination": "LUK51",
+            "schedule": "07:25",
+            "actual": "07:20",
+            "variance": "-5"
+        },
+        {
+            "id": 11,
             "destination": "OXD59",
             "schedule": "07:25",
             "actual": "07:45",
