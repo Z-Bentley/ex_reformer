@@ -157,9 +157,9 @@
         {
             "id": 19,
             "destination": "LUK19",
-            "schedule": "07:17",
+            "schedule": "07:27",
             "actual": "07:51",
-            "variance": "+44"
+            "variance": "+34"
         }
     ]
 }
